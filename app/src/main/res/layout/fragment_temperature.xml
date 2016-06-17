@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/child_pager_height"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:id="@+id/layout_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ib_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_round_title_color"
+            android:padding="5dp"
+            android:src="@drawable/day0" />
+
+        <TextView
+            android:id="@+id/tv_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:text="阵雨"
+            android:textColor="@color/bg_title_bar" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_top"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/bg_title_bar"
+        android:textSize="120sp" />
+
+
+    <LinearLayout
+        android:id="@+id/layout_center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_temperature">
+
+        <TextView
+            android:id="@+id/tv_humidity"
+            style="@style/DataTextView"
+            android:text="湿度" />
+
+        <TextView
+            android:id="@+id/tv_winddirect"
+            style="@style/DataTextView"
+            android:text="湿度" />
+
+        <TextView
+            android:id="@+id/tv_updatetime"
+            style="@style/DataTextView"
+            android:text="湿度" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_intro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@android:color/holo_blue_light" />
+
+</RelativeLayout>

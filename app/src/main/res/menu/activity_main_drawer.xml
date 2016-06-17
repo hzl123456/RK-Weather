@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_typhone"
+        android:icon="@drawable/ic_typhone"
+        android:title="@string/nav_typhpne" />
+
+    <item
+        android:id="@+id/nav_addcity"
+        android:icon="@drawable/ic_addcity"
+        android:title="@string/nav_addcity" />
+
+    <item
+        android:id="@+id/nav_manager_city"
+        android:icon="@drawable/ic_manager_city"
+        android:title="@string/nav_manger_city" />
+
+    <item
+        android:id="@+id/nav_setting"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/nav_setting" />
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_about"
+        android:title="@string/nav_about" />
+</menu>

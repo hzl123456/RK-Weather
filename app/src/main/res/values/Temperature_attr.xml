@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TemperatureView">
+        <attr name="TemperatureViewWidth" format="dimension" />
+        <attr name="TemperatureViewTextDown" format="boolean" />
+        <attr name="TemperatureViewPadding" format="dimension" />
+        <attr name="TemperatureViewPaddingLR" format="dimension" />
+    </declare-styleable>
+
+
+</resources>

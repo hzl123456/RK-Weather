@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="12dp"
+    android:layout_height="match_parent">
+
+
+    <ImageButton
+        android:id="@+id/ib_index_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/bg_round_title_color"
+        android:src="@drawable/ic_lifeindex_dress" />
+
+    <TextView
+        android:id="@+id/tv_index_name"
+        android:layout_width="match_parent"
+        android:singleLine="true"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/ib_index_img"
+        android:textColor="@color/bg_title_bar"
+        android:textSize="@dimen/text_middle" />
+
+    <TextView
+        android:id="@+id/tv_index_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_index_name"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/ib_index_img"
+        android:textColor="@color/bg_title_bar" />
+
+
+</RelativeLayout>

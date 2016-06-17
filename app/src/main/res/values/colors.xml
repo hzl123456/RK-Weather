@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 点击灰色变化-->
+    <color name="press_divider_grey">#77BDBDBD</color>
+</resources>

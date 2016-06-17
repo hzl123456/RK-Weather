@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Rk-Weather</string>
+    <string name="navigation_drawer_open">open</string>
+    <string name="navigation_drawer_close">close</string>
+
+    <string name="nav_typhpne">全球台风</string>
+    <string name="nav_addcity">添加城市</string>
+    <string name="nav_manger_city">管理城市</string>
+    <string name="nav_setting">设置</string>
+    <string name="nav_about">关于</string>
+    <string name="title_search_city">搜索城市</string>
+    <string name="share_weather">分享天气</string>
+    <string name="now_choose">(当前城市)</string>
+    <string name="edit_city">管理城市</string>
+</resources>

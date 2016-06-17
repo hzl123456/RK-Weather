@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="DataTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:drawablePadding">3dp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">@color/bg_title_bar</item>
+        <item name="android:textSize">@dimen/text_normal</item>
+    </style>
+
+</resources>

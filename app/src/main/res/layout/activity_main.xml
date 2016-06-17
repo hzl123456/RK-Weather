@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.MainActivity">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_grey"
+            android:orientation="vertical"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_bar_height"
+                android:background="@color/bg_title_bar"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/title_bar_height"
+            tools:openDrawer="start">
+
+
+            <!--存储信息-->
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <android.support.design.widget.NavigationView
+                android:id="@+id/nav_view"
+                android:layout_width="@dimen/nav_drawer_width"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:background="@color/bg_white"
+                app:headerLayout="@layout/item_main_header"
+                app:menu="@menu/activity_main_drawer" />
+        </android.support.v4.widget.DrawerLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

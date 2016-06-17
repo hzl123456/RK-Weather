@@ -1,0 +1,29 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "24.0.0 rc4"
+
+    defaultConfig {
+        applicationId "cn.xmrk.weather"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':rkandroid')
+    compile files('libs/BaiduLBS_Android.jar')
+    compile 'com.bigkoo:quicksidebar:1.0.1'
+    //recyclerview分组，顶部浮动
+    compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
+}

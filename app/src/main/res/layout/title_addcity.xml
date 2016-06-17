@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/title_bar_height"
+  >
+
+    <cn.xmrk.rkandroid.widget.edittext.ClearEditText
+        android:id="@+id/et_search"
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/title_text_size"
+        android:textColor="@color/bg_white"
+        android:textColorHint="@color/bg_grey"
+        android:hint="@string/title_search_city"
+        android:drawableRight="@drawable/ic_close_white"
+        android:singleLine="true"
+        android:paddingRight="10dp"
+        android:drawablePadding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null" />
+
+</RelativeLayout>

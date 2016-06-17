@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:background="@drawable/icon_drawer"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/loc_icon"
+        android:drawablePadding="7dp"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:text="思明区"
+        android:textColor="@color/bg_white"
+        android:textSize="@dimen/text_big" />
+
+</LinearLayout>
