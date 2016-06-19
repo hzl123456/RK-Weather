@@ -18,6 +18,7 @@ import cn.xmrk.weather.net.BaseRequest;
 import cn.xmrk.weather.net.WeatherCallback;
 import cn.xmrk.weather.pojo.ChooseCityInfo;
 import cn.xmrk.weather.pojo.WeatherInfo;
+import cn.xmrk.weather.pojo.WeatherPost;
 import cn.xmrk.weather.util.AutoSwipeRefreshLayout;
 import okhttp3.Call;
 
@@ -53,11 +54,17 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
      **/
     private ChooseCityInfo info;
 
-    public static CityInfoFragment newInstance(ChooseCityInfo info, boolean isFirstFragment) {
+    /**
+     * 给定的一个标志
+     **/
+    public String fragmentTag;
+
+    public static CityInfoFragment newInstance(ChooseCityInfo info, boolean isFirstFragment, String fragmentTag) {
         CityInfoFragment f = new CityInfoFragment();
         Bundle args = new Bundle();
         args.putParcelable("data", info);
         args.putBoolean("first", isFirstFragment);
+        args.putString("fragmentTag", fragmentTag);
         f.setArguments(args);
         return f;
     }
@@ -87,7 +94,7 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
      **/
     private void chooseTitle() {
         MainActivity activity = (MainActivity) getActivity();
-        activity.setTitle(info.city.city_child);
+        activity.setTitle(info.cityName);
     }
 
     private void findViews() {
@@ -109,6 +116,8 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
         info = getArguments().getParcelable("data");
         //判断是否为第一个fragment
         isFirstFragment = getArguments().getBoolean("first");
+        //获取标志
+        fragmentTag = getArguments().getString("fragmentTag");
     }
 
     @Override
@@ -131,7 +140,7 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     private void initContent() {
-        mAdapter = new WeatherAdapter(info.mWeatherInfo, getActivity());
+        mAdapter = new WeatherAdapter(info.mWeatherInfo, this);
         rvContent.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvContent.setAdapter(mAdapter);
     }
@@ -141,7 +150,7 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
             @Override
             public void onResponse(WeatherInfo response, int id) {
                 //通过eventbus将数据分给他的子fragment
-                EventBus.getDefault().post(response);
+                EventBus.getDefault().post(new WeatherPost(fragmentTag, response));
                 //自己刷新自己
                 refreshContent(response);
             }
@@ -160,7 +169,7 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("resume-->", info.city.city_child);
+        Log.i("resume-->", info.cityName);
         if (isFirstFragment) {
             loadData();
             isFirstFragment = false;

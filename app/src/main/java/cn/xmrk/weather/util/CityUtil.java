@@ -28,6 +28,8 @@ public class CityUtil {
      **/
     public List<CityInfo> cityInfos;
 
+    private SQLiteDatabase db;
+
     private CityUtil() {
 
     }
@@ -37,7 +39,10 @@ public class CityUtil {
     public static CityUtil getInstance() {
         if (mCityUtil == null) {
             mCityUtil = new CityUtil();
-            mCityUtil.loadCityInfos(mCityUtil.loadDbFile());
+            //获取数据库信息
+            mCityUtil.db=mCityUtil.loadDbFile();
+            //然后记载数据信息
+            mCityUtil.loadCityInfos();
         }
         return mCityUtil;
     }
@@ -83,10 +88,10 @@ public class CityUtil {
     /**
      * 获取数据文件并且转化数据
      **/
-    private void loadCityInfos(SQLiteDatabase db) {
+    private void loadCityInfos() {
         cityInfos = new ArrayList<>();
         CityInfo info = null;
-        Cursor cursor = db.rawQuery("select * from city where country=? order by city_child_en", new String[]{"中国"});
+        Cursor cursor = mCityUtil.db.rawQuery("select * from city where country=? order by city_child_en", new String[]{"中国"});
         while (cursor.moveToNext()) {
             info = new CityInfo();
             info.city_id = cursor.getLong(cursor.getColumnIndex("city_id"));
@@ -105,6 +110,17 @@ public class CityUtil {
         Log.i("city-->", cityInfos.size() + "");
     }
 
+    /**
+     * 根据城市列表获取城市信息
+     **/
+    public CityInfo checkCityInfo(String cityName) {
+        for(int i=0;i<cityInfos.size();i++){
+            if(StringUtil.isEqualsString(cityName,cityInfos.get(i).city_child)){
+                return cityInfos.get(i);
+            }
+        }
+        return null;
+    }
 
     /**
      * 根据输入信息获取城市列表
@@ -124,5 +140,6 @@ public class CityUtil {
         }
         return infos;
     }
+
 
 }

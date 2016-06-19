@@ -9,8 +9,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import cn.xmrk.rkandroid.fragment.BaseFragment;
+import cn.xmrk.rkandroid.utils.StringUtil;
 import cn.xmrk.weather.R;
 import cn.xmrk.weather.pojo.WeatherInfo;
+import cn.xmrk.weather.pojo.WeatherPost;
 import cn.xmrk.weather.util.WeatherUtil;
 
 /**
@@ -27,11 +29,13 @@ public class TemperatureFragment extends BaseFragment {
     private ImageButton ibWeather;
 
     private WeatherInfo info;
+    private String fragmentTag;
 
-    public static TemperatureFragment newInstance(WeatherInfo info) {
+    public static TemperatureFragment newInstance(WeatherInfo info, String fragmentTag) {
         TemperatureFragment f = new TemperatureFragment();
         Bundle args = new Bundle();
         args.putParcelable("data", info);
+        args.putString("fragmentTag", fragmentTag);
         f.setArguments(args);
         return f;
     }
@@ -59,13 +63,17 @@ public class TemperatureFragment extends BaseFragment {
     }
 
     @Subscribe
-    public void onEventMainThread(WeatherInfo info) {
-        Log.i("info-->", "接收到了" + info.getCity());
-        this.info = info;
-        initData();
+    public void onEventMainThread(WeatherPost post) {
+        if (StringUtil.isEqualsString(post.fragmnetTag, this.fragmentTag)) {
+            Log.i("info-->", "接收到了" + fragmentTag + "_" + info.getCity());
+            this.info = post.weatherInfo;
+            initData();
+        }
     }
 
+
     public void initData() {
+        fragmentTag = getArguments().getString("fragmentTag");
         info = getArguments().getParcelable("data");
         if (info != null) {
             //设置天气

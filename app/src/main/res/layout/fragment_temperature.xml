@@ -33,12 +33,12 @@
     <TextView
         android:id="@+id/tv_temperature"
         android:layout_width="wrap_content"
+        android:text="20"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_top"
         android:layout_centerHorizontal="true"
         android:textColor="@color/bg_title_bar"
         android:textSize="120sp" />
-
 
     <LinearLayout
         android:id="@+id/layout_center"

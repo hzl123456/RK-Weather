@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,10 @@ import cn.xmrk.rkandroid.utils.CommonUtil;
 import cn.xmrk.weather.R;
 import cn.xmrk.weather.db.ChooseCityInfoDbHelper;
 import cn.xmrk.weather.fragment.CityInfoFragment;
+import cn.xmrk.weather.helper.LocationHelper;
 import cn.xmrk.weather.pojo.ChooseCityInfo;
+import cn.xmrk.weather.pojo.CityInfo;
+import cn.xmrk.weather.util.CityUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -65,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private FragmentPagerAdapter mAdapter;
 
+    /**
+     * 定位使用
+     **/
+    private LocationHelper mLocationHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +86,53 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initHeaderView();
         getWeatherCity();
         initViewPager();
+        startLocation();
+    }
+
+    /**
+     * 开始定位
+     **/
+    private void startLocation() {
+        mLocationHelper.setOnPoiGetListener(new LocationHelper.OnPoiGetListener() {
+            @Override
+            public void onGet(BDLocation info) {
+                //获取城市名称
+                String cityName = info.getCity().endsWith("市") ? info.getCity().replace("市", "") : info.getCity();
+                //判断是否已经含有该城市信息了,没有的话就添加个
+                if (!dbHelper.checkHasLocationCity(cityName)) {
+                    CityInfo cityInfo = CityUtil.getInstance().checkCityInfo(cityName);
+                    if (cityInfo != null) {
+                        //根据cityInfo生成一个chooseCityInfo，并且保存起来
+                        ChooseCityInfo chooseCityInfo = new ChooseCityInfo();
+                        //保存城市信息
+                        chooseCityInfo.cityName = cityInfo.city_child;
+                        chooseCityInfo.city = cityInfo;
+                        chooseCityInfo.cityString = CommonUtil.getGson().toJson(cityInfo);
+                        //如果数量为0就设置为当前城市
+                        if (dbHelper.getChooseCityInfoCount() == 0) {
+                            chooseCityInfo.isChooseCity = true;
+                        }
+                        dbHelper.saveChooseCityInfo(chooseCityInfo);
+
+                        //添加xin的fragment，并且跳转到当前页
+                        fragments.add(CityInfoFragment.newInstance(chooseCityInfo, fragments.size() == 0, "fragment" + fragments.size()));
+                        //刷新adapter
+                        mAdapter.notifyDataSetChanged();
+                        //跳转到新添加的页面
+                        viewPager.setCurrentItem(fragments.size() - 1);
+                    }
+                }
+            }
+        });
+        mLocationHelper.startLocation();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mLocationHelper != null) {
+            mLocationHelper.stopLocation();
+        }
     }
 
     /**
@@ -94,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         dbHelper = new ChooseCityInfoDbHelper();
+        mLocationHelper = new LocationHelper();
     }
 
     /**
@@ -105,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //添加所需要显示的fragment
         if (infos != null && infos.size() > 0) {
             for (int i = 0; i < infos.size(); i++) {
-                fragments.add(CityInfoFragment.newInstance(infos.get(i), i == 0));
+                fragments.add(CityInfoFragment.newInstance(infos.get(i), i == 0, "fragment" + i));
             }
         }
     }
@@ -173,7 +231,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer_layout.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        //设置navigationView距离上面的高度，一般减去一个状态栏的高度
     }
 
     @Override
@@ -220,14 +277,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (requestCode == ADD_CITY_CODE) {//添加城市的回调
                 ChooseCityInfo info = (ChooseCityInfo) data.getExtras().get("data");
                 //添加xin的fragment，并且跳转到当前页
-                fragments.add(CityInfoFragment.newInstance(info, fragments.size() == 0));
+                fragments.add(CityInfoFragment.newInstance(info, fragments.size() == 0, "fragment" + fragments.size()));
                 //刷新adapter
                 mAdapter.notifyDataSetChanged();
                 //跳转到新添加的页面
                 viewPager.setCurrentItem(fragments.size() - 1);
-            } else if (requestCode == EDIT_CITY_CODE) {//管理城市的回调
-
-
+            } else if (requestCode == EDIT_CITY_CODE) {//管理城市的回
+                //重新启动下
+                startActivity(MainActivity.class);
+                finish();
             }
         }
     }

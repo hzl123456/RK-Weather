@@ -170,4 +170,21 @@ public class ChooseCityInfoDbHelper {
         }
     }
 
+    /**
+     * 判断是否含有该城市了
+     **/
+    public boolean checkHasLocationCity(String cityName) {
+        Dao _dao = getChooseCityInfoDao();
+        try {
+            QueryBuilder<ChooseCityInfo, Integer> _qb = _dao.queryBuilder();
+            Where<ChooseCityInfo, Integer> _where = _qb.where();
+            _where.eq("cityName", cityName);
+            return _qb.query().size() != 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            log.error("获取失败", e);
+            return false;
+        }
+    }
+
 }

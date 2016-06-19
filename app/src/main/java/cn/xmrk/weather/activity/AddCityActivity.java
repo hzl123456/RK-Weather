@@ -119,6 +119,7 @@ public class AddCityActivity extends BaseActivity implements OnQuickSideBarTouch
                         }
                         ChooseCityInfo info = new ChooseCityInfo();
                         //保存城市信息
+                        info.cityName = cityInfo.city_child;
                         info.city = cityInfo;
                         info.cityString = CommonUtil.getGson().toJson(cityInfo);
                         //如果数量为0就设置为当前城市
@@ -128,9 +129,9 @@ public class AddCityActivity extends BaseActivity implements OnQuickSideBarTouch
                         dbHelper.saveChooseCityInfo(info);
 
                         //进行数据的回调，让主页面进行显示
-                        Intent intent=new Intent();
-                        intent.putExtra("data",info);
-                        setResult(RESULT_OK,intent);
+                        Intent intent = new Intent();
+                        intent.putExtra("data", info);
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
                 }, null);

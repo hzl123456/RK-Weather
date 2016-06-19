@@ -18,6 +18,14 @@ public class ChooseCityInfo implements Parcelable {
     @DatabaseField(columnName = "id", generatedId = true)
     public int id;
 
+
+    /**
+     * 这边保存一个cityNmae，使用需要
+     * **/
+    @DatabaseField(columnName = "cityName")
+    public String cityName;
+
+
     /**
      * 是否为当前城市
      **/
@@ -47,6 +55,7 @@ public class ChooseCityInfo implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
+        dest.writeString(this.cityName);
         dest.writeByte(this.isChooseCity ? (byte) 1 : (byte) 0);
         dest.writeString(this.cityString);
         dest.writeParcelable(this.city, flags);
@@ -58,6 +67,7 @@ public class ChooseCityInfo implements Parcelable {
     }
 
     protected ChooseCityInfo(Parcel in) {
+        this.cityName=in.readString();
         this.id = in.readInt();
         this.isChooseCity = in.readByte() != 0;
         this.cityString = in.readString();

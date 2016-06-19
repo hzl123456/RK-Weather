@@ -198,7 +198,6 @@ public abstract class BaseFragment extends Fragment {
      */
     protected abstract int getContentViewId();
 
-    public void initData(){};
 
     public boolean canBackActivity() {
         return true;

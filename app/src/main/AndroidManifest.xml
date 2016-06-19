@@ -46,16 +46,17 @@
         <activity
             android:name=".activity.EditCityActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="CpifI64upriuifBKs2Gug5H7rKMAxwqG" />
+
+        <!--百度定位-->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"></service>
+
     </application>
 
-    <!--要用到的时候再来换这个value-->
-    <meta-data
-        android:name="com.baidu.lbsapi.API_KEY"
-        android:value="N0QaR4G8W46UCFjHuxv1g9pG5tnD05iw" />
-
-    <!--百度定位-->
-    <service
-        android:name="com.baidu.location.f"
-        android:enabled="true"
-        android:process=":remote"></service>
 </manifest>

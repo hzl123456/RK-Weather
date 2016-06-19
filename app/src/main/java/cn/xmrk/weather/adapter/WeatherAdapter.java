@@ -1,7 +1,6 @@
 package cn.xmrk.weather.adapter;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -19,6 +18,8 @@ import cn.xmrk.rkandroid.fragment.BaseFragment;
 import cn.xmrk.rkandroid.utils.StringUtil;
 import cn.xmrk.weather.R;
 import cn.xmrk.weather.application.WeatherApplication;
+import cn.xmrk.weather.fragment.AqiInfoFragment;
+import cn.xmrk.weather.fragment.CityInfoFragment;
 import cn.xmrk.weather.fragment.TemperatureFragment;
 import cn.xmrk.weather.pojo.WeatherInfo;
 import cn.xmrk.weather.util.WeatherUtil;
@@ -48,16 +49,17 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private WeatherInfo mData;
 
-    private FragmentActivity activity;
+    private CityInfoFragment cityFragment;
 
-    public WeatherAdapter(WeatherInfo mData, FragmentActivity activity) {
-        this.activity = activity;
+    public WeatherAdapter(WeatherInfo mData, CityInfoFragment cityFragment) {
+        this.cityFragment = cityFragment;
         this.mData = mData;
-        Log.i("ddddd-->", "dddddd");
+
         fragments = new ArrayList<>();
-        fragments.add(TemperatureFragment.newInstance(mData));
+        fragments.add(TemperatureFragment.newInstance(mData, cityFragment.fragmentTag));
+        fragments.add(AqiInfoFragment.newInstance(mData, cityFragment.fragmentTag));
         //实例化fragment
-        mAdapter = new FragmentPagerAdapter(activity.getSupportFragmentManager()) {
+        mAdapter = new FragmentPagerAdapter(cityFragment.getActivity().getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 return fragments.get(position);
@@ -84,12 +86,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case 0: //风向
-                return new RecyclerView.ViewHolder(activity.getLayoutInflater().inflate(R.layout.item_child_viewpager, null)) {
+                return new RecyclerView.ViewHolder(cityFragment.getActivity().getLayoutInflater().inflate(R.layout.item_child_viewpager, null)) {
                 };
             case 1://温度
-                return new TempViewHolder(activity.getLayoutInflater().inflate(R.layout.layout_item_weather, null));
+                return new TempViewHolder(cityFragment.getActivity().getLayoutInflater().inflate(R.layout.layout_item_weather, null));
         }
-        return new IndexViewHolder(activity.getLayoutInflater().inflate(R.layout.layout_item_index, null));
+        return new IndexViewHolder(cityFragment.getActivity().getLayoutInflater().inflate(R.layout.layout_item_index, null));
     }
 
     @Override
@@ -100,11 +102,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (position == 0) {//风向和空气
             //获取子pager
             ChildViewPager pager = (ChildViewPager) itemHolder.itemView.findViewById(R.id.child_pager);
-            if (pager.getAdapter() != null) {
-                pager.setAdapter(mAdapter);
-            }
-
-            Log.i("size-->", activity.getSupportFragmentManager().getFragments().size() + "");
+            pager.setAdapter(mAdapter);
+            pager.setAdapter(mAdapter);
+            Log.i("fragment_size-->", fragments.size() + "");
+            Log.i("madapter_size-->", mAdapter.getCount() + "");
+            Log.i("size-->", cityFragment.getActivity().getSupportFragmentManager().getFragments().size() + "");
         } else if (position == 1) {//一周的天气和温度
             TempViewHolder holder = (TempViewHolder) itemHolder;
             holder.layoutContent.removeAllViews();
