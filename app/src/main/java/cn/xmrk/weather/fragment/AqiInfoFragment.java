@@ -68,7 +68,7 @@ public class AqiInfoFragment extends BaseFragment {
         info = getArguments().getParcelable("data");
         if (info != null) {
             mAqiView.setRang(Integer.parseInt(info.getAqi().getAqi()));
-            tvApiIntro.setText("空气质量" + info.getAqi().getQuality());
+            tvApiIntro.setText("空气" + info.getAqi().getQuality());
             tvApiLevel.setText("AQI:" + Integer.parseInt(info.getAqi().getAqi()));
             tvApiPm2_5.setText("PM2.5:" + info.getAqi().getPm2_5());
             tvApiPm10.setText("PM10:" + info.getAqi().getPm10());

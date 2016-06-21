@@ -46,6 +46,14 @@
         <activity
             android:name=".activity.EditCityActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <!--设置-->
+        <activity
+            android:name=".activity.SettingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!--关于我们-->
+        <activity
+            android:name=".activity.AboutUsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

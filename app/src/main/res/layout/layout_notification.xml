@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:src="@drawable/ic_launcher" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+      >
+
+        <TextView
+            android:id="@+id/tv_t_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="31°"
+            android:textColor="@color/bg_title_bar"
+            android:textSize="@dimen/text_middle" />
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="厦门"
+            android:textColor="@color/bg_title_bar"
+            android:textSize="@dimen/text_middle" />
+
+        <TextView
+            android:id="@+id/tv_weather"
+            android:layout_marginTop="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="多云"
+            android:textColor="@color/bg_title_bar"
+            android:textSize="@dimen/text_middle" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_marginTop="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="20:00更新"
+            android:textColor="@color/bg_title_bar"
+            android:textSize="@dimen/text_middle" />
+
+    </RelativeLayout>
+
+</LinearLayout>

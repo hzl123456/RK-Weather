@@ -1,7 +1,12 @@
 <resources>
-    <string name="app_name">Rk-Weather</string>
+    <string name="app_name">Weather</string>
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
+
+    <string name="tv_intro">
+        Weather是仿照一款叫做天气的软件制作的
+
+    </string>
 
     <string name="nav_typhpne">全球台风</string>
     <string name="nav_addcity">添加城市</string>

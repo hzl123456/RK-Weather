@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.xmrk.rkandroid.utils.CommonUtil;
+import cn.xmrk.rkandroid.utils.StringUtil;
 import cn.xmrk.weather.R;
 import cn.xmrk.weather.db.ChooseCityInfoDbHelper;
 import cn.xmrk.weather.fragment.CityInfoFragment;
@@ -96,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mLocationHelper.setOnPoiGetListener(new LocationHelper.OnPoiGetListener() {
             @Override
             public void onGet(BDLocation info) {
+                //设置侧滑的当前城市显示
+                tvCity.setText(StringUtil.isEmptyString(info.getStreet()) ? info.getCity() : info.getStreet());
                 //获取城市名称
                 String cityName = info.getCity().endsWith("市") ? info.getCity().replace("市", "") : info.getCity();
                 //判断是否已经含有该城市信息了,没有的话就添加个
@@ -222,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tvTitle.setText(title);
     }
 
+
     private void initHeaderView() {
         //获取和设置头部信息
         tvCity = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tv_city);
@@ -254,8 +258,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivityForResult(EditCityActivity.class, EDIT_CITY_CODE);
                 break;
             case R.id.nav_setting://设置
+                startActivity(SettingActivity.class);
                 break;
             case R.id.nav_about://关于
+                startActivity(AboutUsActivity.class);
                 break;
         }
         drawer_layout.closeDrawer(GravityCompat.START);

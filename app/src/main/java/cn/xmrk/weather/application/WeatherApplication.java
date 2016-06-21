@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import cn.xmrk.rkandroid.application.RKApplication;
 import cn.xmrk.rkandroid.config.IRKConfig;
+import cn.xmrk.weather.helper.UpdateTimeHelper;
 import cn.xmrk.weather.util.CityUtil;
 import okhttp3.OkHttpClient;
 
@@ -55,6 +56,8 @@ public class WeatherApplication extends RKApplication {
         SDKInitializer.initialize(this);
         //配置okhttp
         initClient();
+        //后台定时
+        UpdateTimeHelper.getInstance();
     }
 
 

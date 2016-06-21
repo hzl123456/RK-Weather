@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
@@ -17,6 +19,7 @@ import android.os.Looper;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -467,5 +470,23 @@ public class CommonUtil {
             result = getAppContext().getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    /**
+     * 返回当前程序版本名
+     */
+    public static String getAppVersionName() {
+        String versionName = "";
+        try {
+            PackageManager pm = RKApplication.getInstance().getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(RKApplication.getInstance().getPackageName(), 0);
+            versionName = pi.versionName;
+            if (versionName == null || versionName.length() <= 0) {
+                return "";
+            }
+        } catch (Exception e) {
+            Log.e("VersionInfo", "Exception", e);
+        }
+        return versionName;
     }
 }

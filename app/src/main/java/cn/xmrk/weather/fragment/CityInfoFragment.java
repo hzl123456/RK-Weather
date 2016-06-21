@@ -7,6 +7,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import cn.xmrk.rkandroid.fragment.BaseFragment;
 import cn.xmrk.rkandroid.utils.CommonUtil;
@@ -14,6 +15,7 @@ import cn.xmrk.weather.R;
 import cn.xmrk.weather.activity.MainActivity;
 import cn.xmrk.weather.adapter.WeatherAdapter;
 import cn.xmrk.weather.db.ChooseCityInfoDbHelper;
+import cn.xmrk.weather.helper.NotificatinHelper;
 import cn.xmrk.weather.net.BaseRequest;
 import cn.xmrk.weather.net.WeatherCallback;
 import cn.xmrk.weather.pojo.ChooseCityInfo;
@@ -124,6 +126,14 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
     public void onRefresh() {
         //在这里刷新数据
         loadWheatherInfo();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //进行反注册
+        EventBus.getDefault().unregister(this);
     }
 
     private void refreshContent(WeatherInfo response) {
@@ -153,6 +163,8 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
                 EventBus.getDefault().post(new WeatherPost(fragmentTag, response));
                 //自己刷新自己
                 refreshContent(response);
+                //刷新通知
+                NotificatinHelper.showNotification(info);
             }
 
             @Override
@@ -174,6 +186,11 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
             loadData();
             isFirstFragment = false;
         }
+        //进行注册
+        EventBus.getDefault().register(this);
+
+        //展现通知
+        NotificatinHelper.showNotification(info);
     }
 
     /**
@@ -185,5 +202,14 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
         if (!hasRefresh) {
             sfRefresh.autoRefresh();
         }
+    }
+
+
+    /**
+     * 收到消息就进行更新
+     **/
+    @Subscribe
+    public void onEventMainThread(String time) {
+        onRefresh();
     }
 }

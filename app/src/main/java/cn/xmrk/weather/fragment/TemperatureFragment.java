@@ -2,6 +2,7 @@ package cn.xmrk.weather.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import org.greenrobot.eventbus.Subscribe;
 import cn.xmrk.rkandroid.fragment.BaseFragment;
 import cn.xmrk.rkandroid.utils.StringUtil;
 import cn.xmrk.weather.R;
+import cn.xmrk.weather.helper.TshowHelper;
 import cn.xmrk.weather.pojo.WeatherInfo;
 import cn.xmrk.weather.pojo.WeatherPost;
 import cn.xmrk.weather.util.WeatherUtil;
@@ -27,6 +29,8 @@ public class TemperatureFragment extends BaseFragment {
     private TextView tvWinddirect;
     private TextView tvUpdatetime;
     private ImageButton ibWeather;
+
+    private TshowHelper mHelper;
 
     private WeatherInfo info;
     private String fragmentTag;
@@ -100,6 +104,19 @@ public class TemperatureFragment extends BaseFragment {
         tvWinddirect = (TextView) findViewById(R.id.tv_winddirect);
         tvUpdatetime = (TextView) findViewById(R.id.tv_updatetime);
         ibWeather = (ImageButton) findViewById(R.id.ib_weather);
-    }
 
+        tvTemperature.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (info == null) {
+                    return;
+                }
+                if (mHelper == null) {
+                    mHelper = new TshowHelper();
+                }
+                mHelper.setHourlyBean(info.getHourly());
+                mHelper.showPopuWindow(getActivity().getWindow().getDecorView());
+            }
+        });
+    }
 }

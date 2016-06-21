@@ -50,7 +50,7 @@ public class AqiView extends View {
     /**
      * 最大值和最大的角度
      **/
-    private int maxAqi = 100;
+    private int maxAqi = 200;
     private int totalRang = 300;
 
     private int startRang = -240;

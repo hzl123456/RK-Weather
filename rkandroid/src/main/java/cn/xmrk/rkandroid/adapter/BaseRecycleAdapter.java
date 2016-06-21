@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Au61 on 2016/6/15.
  */
-public class BaseRecycleAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract  class BaseRecycleAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     protected OnViewHolderClickListener mOnViewHolderClickListener;
 
@@ -36,6 +36,7 @@ public class BaseRecycleAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vie
         return null;
     }
 
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
@@ -43,6 +44,8 @@ public class BaseRecycleAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
+
         return mData == null ? 0 : mData.size();
     }
+
 }

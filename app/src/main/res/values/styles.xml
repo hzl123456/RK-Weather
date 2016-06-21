@@ -10,4 +10,17 @@
         <item name="android:textSize">@dimen/text_normal</item>
     </style>
 
+    <style name="PopupAnimation" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
+    <style name="SettingLayout">
+        <item name="android:clickable">true</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:background">@drawable/btn_click_ripple_grey</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+
+    </style>
 </resources>

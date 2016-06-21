@@ -67,8 +67,8 @@ public class ChooseCityInfo implements Parcelable {
     }
 
     protected ChooseCityInfo(Parcel in) {
-        this.cityName=in.readString();
         this.id = in.readInt();
+        this.cityName = in.readString();
         this.isChooseCity = in.readByte() != 0;
         this.cityString = in.readString();
         this.city = in.readParcelable(CityInfo.class.getClassLoader());
