@@ -13,3 +13,15 @@
     compile 'com.squareup.okhttp3:okhttp:3.3.1'//okhttp网络请求框架
     
     下面是一些程序截图：
+    
+    ![image](https://github.com/hzl123456/RK-Weather/blob/master/screen/Screenshot_2016-06-22-17-49-30.png)
+    ![image](https://github.com/hzl123456/RK-Weather/blob/master/screen/Screenshot_2016-06-22-17-44-59.png)
+    ![image](https://github.com/hzl123456/RK-Weather/blob/master/screen/Screenshot_2016-06-22-17-44-44.png)
+    ![image](https://github.com/hzl123456/RK-Weather/blob/master/screen/Screenshot_2016-06-22-17-44-33.png)
+    ![image](https://github.com/hzl123456/RK-Weather/blob/master/screen/Screenshot_2016-06-22-17-44-09.png)
+    ![image](https://github.com/hzl123456/RK-Weather/blob/master/screen/Screenshot_2016-06-22-17-43-58.png)
+    ![image](https://github.com/hzl123456/RK-Weather/blob/master/screen/Screenshot_2016-06-22-17-43-48.png)
+    ![image](https://github.com/hzl123456/RK-Weather/blob/master/screen/Screenshot_2016-06-22-17-43-42.png)
+    ![image](https://github.com/hzl123456/RK-Weather/blob/master/screen/Screenshot_2016-06-22-17-43-35.png)
+    ![image](https://github.com/hzl123456/RK-Weather/blob/master/screen/Screenshot_2016-06-22-17-43-10.png)
+    
