@@ -1,12 +1,18 @@
 package cn.xmrk.weather.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -41,6 +47,8 @@ import cn.xmrk.weather.pojo.CityInfo;
 import cn.xmrk.weather.util.CityUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+
+    public final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
     //添加城市和管理城市的回调
     private final int ADD_CITY_CODE = 88;
@@ -87,6 +95,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        showVersion();
+
+    }
+
+    private void showVersion() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//当前的sdk版本大于等于23
+            insertDummyContactWrapper();
+        } else {
+            canUse();
+        }
+    }
+
+    private void canUse() {
         setContentView(R.layout.activity_main);
         initView();
         setStatusColor();
@@ -95,6 +116,52 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getWeatherCity();
         initViewPager();
         startLocation();
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void insertDummyContactWrapper() {
+        //需要手动请求的权限，（文件读写,定位）
+        String[] needPermission = new String[]{  Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION};
+        //未允许使用的权限
+        List<String> needToPer = new ArrayList<>();
+        for (int i = 0; i < needPermission.length; i++) {
+            int hasWriteContactsPermission = checkSelfPermission(needPermission[i]);
+            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+                needToPer.add(needPermission[i]);
+            }
+        }
+        if (needToPer.size() == 0) {
+            canUse();
+        } else {
+            String[] sp = new String[needToPer.size()];
+            for (int i = 0; i < sp.length; i++) {
+                sp[i] = needToPer.get(i);
+            }
+            requestPermissions(sp,
+                    REQUEST_CODE_ASK_PERMISSIONS);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE_ASK_PERMISSIONS) {//权限结果来了
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setMessage("有权限未被允许使用，可在安全中心-权限管理中打开权限").setCancelable(false)
+                            .setPositiveButton("退出Keep", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .create()
+                            .show();
+                    return;
+                }
+            }
+            canUse();
+        }
     }
 
     /**
