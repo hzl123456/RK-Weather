@@ -50,7 +50,7 @@ public class AqiView extends View {
     /**
      * 最大值和最大的角度
      **/
-    private int maxAqi = 200;
+    private int maxAqi = 300;
     private int totalRang = 300;
 
     private int startRang = -240;
@@ -75,19 +75,10 @@ public class AqiView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //先画外部的圆弧
-        canvas.drawArc(mRectF, startRang, totalRang, false, mPaint);
-        //再画里面的圆弧
-        canvas.drawArc(mRectF, startRang, nowRang, false, mCiclePaint);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mWidth = getWidth();
-        mHeight = getHeight();
-        //半径是高度减去上下流出的距离，然后一半
-        radiu = (mHeight - topBottomPadding * 2) / 2;
-        initRectF();
+        if (mRectF != null) {
+            canvas.drawArc(mRectF, startRang, totalRang, false, mPaint);
+            canvas.drawArc(mRectF, startRang, nowRang, false, mCiclePaint);
+        }
     }
 
     private void initPaint() {
@@ -122,8 +113,13 @@ public class AqiView extends View {
     /**
      * 计算以后再重新绘制
      **/
-    public void setRang(int nowAqi) {
+    public void setRang(int nowAqi, int width, int height) {
         this.nowAqi = nowAqi;
+        this.mWidth = width;
+        this.mHeight = height;
+        //半径是高度减去上下流出的距离，然后一半
+        radiu = (mHeight - topBottomPadding * 2) / 2;
+        initRectF();
         nowRang = (int) (((float) nowAqi / maxAqi) * totalRang);
         invalidate();
     }

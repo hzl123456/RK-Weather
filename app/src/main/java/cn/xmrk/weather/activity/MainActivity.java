@@ -2,6 +2,9 @@ package cn.xmrk.weather.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,10 +24,13 @@ import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.xmrk.rkandroid.activity.WebViewActivity;
 import cn.xmrk.rkandroid.utils.CommonUtil;
+import cn.xmrk.rkandroid.utils.FileUtil;
 import cn.xmrk.rkandroid.utils.StringUtil;
 import cn.xmrk.weather.R;
 import cn.xmrk.weather.db.ChooseCityInfoDbHelper;
@@ -239,9 +246,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onClick(View v) {
-        if (v == ibShare) {//分享图片
-
+        if (v == ibShare) {//分享图片,就是截屏进行分享
+            sharePicture();
         }
+    }
+
+    private void sharePicture() {
+        // 获取windows中最顶层的view
+        View view = getWindow().getDecorView();
+        // 允许当前窗口保存缓存信息
+        view.setDrawingCacheEnabled(true);
+        // 获取状态栏高度
+        Rect rect = new Rect();
+        view.getWindowVisibleDisplayFrame(rect);
+        int statusBarHeights = rect.top;
+        Display display = getWindowManager().getDefaultDisplay();
+        // 获取屏幕宽和高
+        int widths = display.getWidth();
+        int heights = display.getHeight();
+        // 去掉状态栏
+        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), 0,
+                statusBarHeights, widths, heights - statusBarHeights);
+        // 销毁缓存信息
+        view.destroyDrawingCache();
+        view.setDrawingCacheEnabled(false);
+        //生成父路径
+        File parentFile = new File(CommonUtil.getDir() + File.separator + "weather");
+        if (!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+        //保存图片
+        File file = new File(parentFile.getAbsolutePath() + File.separator + System.currentTimeMillis() + ".png");
+        FileUtil.saveBmpToFilePng(bmp, file);
+        //分享图片
+        Uri uri = Uri.parse("file://" + file.getAbsolutePath());
+        Intent it = new Intent(Intent.ACTION_SEND);
+        it.putExtra(Intent.EXTRA_STREAM, uri);
+        it.setType("image/*");
+        startActivityForResult(Intent.createChooser(it,
+                "分享现在的天气"), 10);
     }
 
     @Override
@@ -250,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_typhone://全球台风
+                WebViewActivity.start(this, "全球台风", "https://earth.nullschool.net/", false);
                 break;
             case R.id.nav_addcity://添加城市
                 startActivityForResult(AddCityActivity.class, ADD_CITY_CODE);

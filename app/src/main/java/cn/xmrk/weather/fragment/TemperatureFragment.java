@@ -55,6 +55,7 @@ public class TemperatureFragment extends BaseFragment {
         super.initOnCreateView(isCreate);
         if (isCreate) {
             findViews();
+            getArgumentsInfo();
             initData();
             EventBus.getDefault().register(this);
         }
@@ -66,19 +67,21 @@ public class TemperatureFragment extends BaseFragment {
         EventBus.getDefault().unregister(this);
     }
 
+    public void getArgumentsInfo() {
+        fragmentTag = getArguments().getString("fragmentTag");
+        info = getArguments().getParcelable("data");
+    }
+
     @Subscribe
     public void onEventMainThread(WeatherPost post) {
         if (StringUtil.isEqualsString(post.fragmnetTag, this.fragmentTag)) {
-            Log.i("info-->", "接收到了" + fragmentTag + "_" + info.getCity());
+            Log.i("info-->", "接收到了" + fragmentTag + "_" + post.weatherInfo.getCity());
             this.info = post.weatherInfo;
             initData();
         }
     }
 
-
     public void initData() {
-        fragmentTag = getArguments().getString("fragmentTag");
-        info = getArguments().getParcelable("data");
         if (info != null) {
             //设置天气
             tvWeather.setText(info.getWeather());

@@ -1,19 +1,22 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="cn.xmrk.rkandroid">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.xmrk.rkandroid">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application>
         <activity
-            android:name="cn.xmrk.rkandroid.activity.WebViewActivity"/>
+            android:name="cn.xmrk.rkandroid.activity.WebViewActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name="cn.xmrk.rkandroid.activity.ChoicePicActivity"
-            android:launchMode="singleTop"
             android:exported="false"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/ActivityDialogBottomToTop"/>
+            android:theme="@style/ActivityDialogBottomToTop"
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 </manifest>

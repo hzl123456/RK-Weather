@@ -2,10 +2,14 @@ package cn.xmrk.weather.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
+
+import java.util.List;
 
 import cn.xmrk.rkandroid.activity.BackableBaseActivity;
 import cn.xmrk.rkandroid.adapter.OnViewHolderClickListener;
@@ -25,12 +29,37 @@ public class EditCityActivity extends BackableBaseActivity {
     private ChooseCityInfoDbHelper dbHelper;
     private ItemTouchHelper mItemTouchHelper;
 
+    /**
+     * 城市信息列表
+     **/
+    private List<ChooseCityInfo> chooseCityInfos;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void dispatchMessage(Message msg) {
+            if (msg.what == 0) {
+                getPDM().dismiss();
+                initRecycle();
+            }
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editcity);
         initView();
-        initRecycle();
+        /**
+         * 子线程加载数据库信息
+         * **/
+        getPDM().showProgress("正在加载城市信息");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                chooseCityInfos = dbHelper.getChooseCityInfoList();
+                mHandler.sendEmptyMessage(0);
+            }
+        }).start();
     }
 
     private void initView() {
@@ -40,7 +69,7 @@ public class EditCityActivity extends BackableBaseActivity {
     }
 
     private void initRecycle() {
-        mAdapter = new ChooseCityAdapter(dbHelper.getChooseCityInfoList(), dbHelper, this);
+        mAdapter = new ChooseCityAdapter(chooseCityInfos, dbHelper, this);
         rvContent.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 
         mAdapter.setOnViewHolderClickListener(new OnViewHolderClickListener() {

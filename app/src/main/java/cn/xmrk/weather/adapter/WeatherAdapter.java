@@ -7,6 +7,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -59,7 +60,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         fragments.add(TemperatureFragment.newInstance(mData, cityFragment.fragmentTag));
         fragments.add(AqiInfoFragment.newInstance(mData, cityFragment.fragmentTag));
         //实例化fragment
-        mAdapter = new FragmentPagerAdapter(cityFragment.getActivity().getSupportFragmentManager()) {
+        mAdapter = new FragmentPagerAdapter(cityFragment.getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 return fragments.get(position);
@@ -86,12 +87,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case 0: //风向
-                return new RecyclerView.ViewHolder(cityFragment.getActivity().getLayoutInflater().inflate(R.layout.item_child_viewpager, null)) {
-                };
+                return new ChildViewHolder(View.inflate(parent.getContext(), R.layout.item_child_viewpager, null));
             case 1://温度
-                return new TempViewHolder(cityFragment.getActivity().getLayoutInflater().inflate(R.layout.layout_item_weather, null));
+                return new TempViewHolder(View.inflate(parent.getContext(), R.layout.layout_item_weather, null));
         }
-        return new IndexViewHolder(cityFragment.getActivity().getLayoutInflater().inflate(R.layout.layout_item_index, null));
+        return new IndexViewHolder(View.inflate(parent.getContext(), R.layout.layout_item_index, null));
     }
 
     @Override
@@ -101,20 +101,25 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
         if (position == 0) {//风向和空气
             //获取子pager
-            ChildViewPager pager = (ChildViewPager) itemHolder.itemView.findViewById(R.id.child_pager);
-            pager.setAdapter(mAdapter);
-            pager.setAdapter(mAdapter);
-            Log.i("fragment_size-->", fragments.size() + "");
-            Log.i("madapter_size-->", mAdapter.getCount() + "");
+            ChildViewHolder holder = (ChildViewHolder) itemHolder;
+            if (holder.pager.getAdapter() == null) {
+                holder.pager.setAdapter(mAdapter);
+            }
+            for (int i = 0; i < holder.pager.getAdapter().getCount(); i++) {
+                if (holder.pager.getAdapter() instanceof FragmentPagerAdapter) {
+                    FragmentPagerAdapter adapter = (FragmentPagerAdapter) holder.pager.getAdapter();
+                    Log.i("fragment-->", adapter.getItem(i).toString());
+                }
+            }
             Log.i("size-->", cityFragment.getActivity().getSupportFragmentManager().getFragments().size() + "");
         } else if (position == 1) {//一周的天气和温度
-            TempViewHolder holder = (TempViewHolder) itemHolder;
+            final TempViewHolder holder = (TempViewHolder) itemHolder;
+            final int[] highTemp = new int[mData.getDaily().size()];
+            final int[] lowTemp = new int[mData.getDaily().size()];
             holder.layoutContent.removeAllViews();
-            int[] highTemp = new int[mData.getDaily().size()];
-            int[] lowTemp = new int[mData.getDaily().size()];
             for (int i = 0; i < mData.getDaily().size(); i++) {
-                highTemp[i] = Integer.parseInt(mData.getDaily().get(i).getDay().getTemphigh());
-                lowTemp[i] = Integer.parseInt(mData.getDaily().get(i).getNight().getTemplow());
+                highTemp[i] = Integer.parseInt(StringUtil.isEmptyString(mData.getDaily().get(i).getDay().getTemphigh()) ? "20" : mData.getDaily().get(i).getDay().getTemphigh());
+                lowTemp[i] = Integer.parseInt(StringUtil.isEmptyString(mData.getDaily().get(i).getNight().getTemplow()) ? "20" : mData.getDaily().get(i).getNight().getTemplow());
 
                 //添加每个天气信息
                 TextView textView = weatherView(mData.getDaily().get(i));
@@ -124,9 +129,21 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
                 textView.setLayoutParams(param);
             }
+            //完成测量之后再去设置信息
+            final View view = holder.tempHigh;
+            ViewTreeObserver
+                    vto = view.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    int height = view.getMeasuredHeight();
+                    int width = view.getMeasuredWidth();
+                    holder.tempHigh.setmTemperature(highTemp, width, height);
+                    holder.tempLow.setmTemperature(lowTemp, width, height);
+                }
+            });
 
-            holder.tempHigh.setmTemperature(highTemp);
-            holder.tempLow.setmTemperature(lowTemp);
 
         } else {//index的指数
             IndexViewHolder holder = (IndexViewHolder) itemHolder;
@@ -152,7 +169,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         //为空的时候就表示没有，否则就是index的长度加上上面2个
         return mData == null ? 0 : 2 + mData.getIndex().size();
     }
-
 
     /**
      * 显示温度的viewholder
@@ -191,6 +207,18 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ibIndexImg = (ImageButton) itemView.findViewById(R.id.ib_index_img);
             tvIndexName = (TextView) itemView.findViewById(R.id.tv_index_name);
             tvIndexIntro = (TextView) itemView.findViewById(R.id.tv_index_intro);
+        }
+    }
+
+    /**
+     * 上面的childViewpager
+     **/
+    public class ChildViewHolder extends RecyclerView.ViewHolder {
+        public ChildViewPager pager;
+
+        public ChildViewHolder(View itemView) {
+            super(itemView);
+            pager = (ChildViewPager) itemView.findViewById(R.id.child_pager);
         }
     }
 

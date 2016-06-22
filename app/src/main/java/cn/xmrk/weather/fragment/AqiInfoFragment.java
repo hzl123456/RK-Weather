@@ -2,6 +2,7 @@ package cn.xmrk.weather.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,6 +50,7 @@ public class AqiInfoFragment extends BaseFragment {
         super.initOnCreateView(isCreate);
         if (isCreate) {
             findViews();
+            getArgumentsInfo();
             initData();
             EventBus.getDefault().register(this);
         }
@@ -57,19 +59,34 @@ public class AqiInfoFragment extends BaseFragment {
     @Subscribe
     public void onEventMainThread(WeatherPost post) {
         if (StringUtil.isEqualsString(post.fragmnetTag, this.fragmentTag)) {
-            Log.i("info-->", "接收到了" + fragmentTag + "_" + info.getCity());
+            Log.i("info-->", "接收到了" + fragmentTag + "_" + post.weatherInfo.getCity());
             this.info = post.weatherInfo;
             initData();
         }
     }
 
-    public void initData() {
+    public void getArgumentsInfo() {
         fragmentTag = getArguments().getString("fragmentTag");
         info = getArguments().getParcelable("data");
+    }
+
+    public void initData() {
         if (info != null) {
-            mAqiView.setRang(Integer.parseInt(info.getAqi().getAqi()));
+            final int aqi = StringUtil.isEmptyString(info.getAqi().getAqi()) ? 0 : Integer.parseInt(info.getAqi().getAqi());
+            //完成测量之后再去设置信息
+            ViewTreeObserver
+                    vto = mAqiView.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    mAqiView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    int width = mAqiView.getMeasuredWidth();
+                    int height = mAqiView.getMeasuredHeight();
+                    mAqiView.setRang(aqi, width, height);
+                }
+            });
             tvApiIntro.setText("空气" + info.getAqi().getQuality());
-            tvApiLevel.setText("AQI:" + Integer.parseInt(info.getAqi().getAqi()));
+            tvApiLevel.setText("AQI:" + (aqi == 0 ? "未知" : aqi));
             tvApiPm2_5.setText("PM2.5:" + info.getAqi().getPm2_5());
             tvApiPm10.setText("PM10:" + info.getAqi().getPm10());
             tvApiSo2.setText("SO2:" + info.getAqi().getSo2());

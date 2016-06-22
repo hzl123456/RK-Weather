@@ -9,15 +9,16 @@ import android.view.MotionEvent;
 /**
  * Created by Au61 on 2016/6/17.
  */
-public class ChildViewPager extends ViewPager{
-    private static final boolean DEFAULT_BOUNDARY_CASHING = false;
+public class ChildViewPager extends ViewPager {
 
-    /** 触摸时按下的点 **/
+    /**
+     * 触摸时按下的点
+     **/
     private PointF downP = new PointF();
-    /** 触摸时当前的点 **/
+    /**
+     * 触摸时当前的点
+     **/
     private PointF curP = new PointF();
-
-    private OnSingleTouchListener onSingleTouchListener;
 
     private boolean isScrollEnable = true;
 
@@ -51,19 +52,15 @@ public class ChildViewPager extends ViewPager{
         curP.x = arg0.getX();
         curP.y = arg0.getY();
 
-        if(arg0.getAction() == MotionEvent.ACTION_DOWN){
+        if (arg0.getAction() == MotionEvent.ACTION_DOWN) {
             //记录按下时候的坐标
             //切记不可用 downP = curP ，这样在改变curP的时候，downP也会改变
             downP.x = arg0.getX();
             downP.y = arg0.getY();
             //此句代码是为了通知他的父ViewPager现在进行的是本控件的操作，不要对我的操作进行干扰
             getParent().requestDisallowInterceptTouchEvent(true);
-            if (onSingleTouchListener != null) {
-                onSingleTouchListener.onTouchDown();
-            }
         }
-
-        if(arg0.getAction() == MotionEvent.ACTION_MOVE && isScrollEnable){
+        if (arg0.getAction() == MotionEvent.ACTION_MOVE && isScrollEnable) {
             // 纵向滑动距离大，就是竖滑，竖滑父控件处理
             int distanceX = (int) Math.abs(downP.x - curP.x);
             int distanceY = (int) Math.abs(downP.y - curP.y);
@@ -74,19 +71,12 @@ public class ChildViewPager extends ViewPager{
                 getParent().requestDisallowInterceptTouchEvent(true);
             }
         }
-        if(arg0.getAction() == MotionEvent.ACTION_UP){
-            if (onSingleTouchListener != null) {
-                onSingleTouchListener.onTouchUp();
-            }
-            //在up时判断是否按下和松手的坐标为一个点
-            //如果是一个点，将执行点击事件，这是我自己写的点击事件，而不是onclick
+        if (arg0.getAction() == MotionEvent.ACTION_UP) {
             // if(downP.x==curP.x && downP.y==curP.y){
-            if(Math.abs(downP.x-curP.x)<5 && Math.abs(downP.y-curP.y)<5){//做了小小的修改
-                onSingleTouch(super.getCurrentItem());
+            if (Math.abs(downP.x - curP.x) < 5 && Math.abs(downP.y - curP.y) < 5) {//做了小小的修改
                 return true;
             }
         }
-
         if (isScrollEnable) {
             return super.onTouchEvent(arg0);
         } else {
@@ -101,27 +91,4 @@ public class ChildViewPager extends ViewPager{
         }
     }
 
-    public void setOnSingleTouch(OnSingleTouchListener listener) {
-        this.onSingleTouchListener = listener;
-    }
-
-    /**
-     * 单击
-     */
-    public void onSingleTouch(int num) {
-        if (onSingleTouchListener!= null) {
-            onSingleTouchListener.onSingleTouch(num);
-        }
-    }
-
-    /**
-     * 创建点击事件接口
-     * @author wanpg
-     *
-     */
-    public interface OnSingleTouchListener {
-        public void onSingleTouch(int num);
-        public void onTouchDown();
-        public void onTouchUp();
-    }
 }

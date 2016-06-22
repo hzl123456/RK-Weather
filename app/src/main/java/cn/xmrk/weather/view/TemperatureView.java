@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import cn.xmrk.rkandroid.utils.CommonUtil;
@@ -73,20 +72,19 @@ public class TemperatureView extends View {
         this(context, attrs, 0);
     }
 
-    public void setmTemperature(int[] mTemperature) {
+    public void setmTemperature(int[] mTemperature, int width, int height) {
         this.mTemperature = mTemperature;
-        Log.i("t-width-->",getWidth()+"");
-        Log.i("t-height-->",getHeight()+"");
-        initPaint();
+        this.mWidth = width;
+        this.mHeight = height;
         chooseMaxMinTemperature();
         getWidthHeight();
         invalidate();
-
     }
 
     public TemperatureView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
+        initPaint();
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -133,9 +131,7 @@ public class TemperatureView extends View {
      * 计算高度
      **/
     private void getWidthHeight() {
-        mHeight = getHeight();
-        mWidth = getWidth();
-        mItemHeight = ((float) (mHeight - topBottomPadding * 2)) / (maxTemperature - minTemperature==0?1:maxTemperature - minTemperature);
+        mItemHeight = ((float) (mHeight - topBottomPadding * 2)) / (maxTemperature - minTemperature == 0 ? 1 : maxTemperature - minTemperature);
         mItemWidth = (float) (mWidth - leftRightPadding * 2) / (mTemperature.length - 1);
     }
 

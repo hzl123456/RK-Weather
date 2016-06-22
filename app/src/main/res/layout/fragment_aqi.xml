@@ -23,13 +23,11 @@
             <TextView
                 android:id="@+id/tv_aqi_intro"
                 style="@style/DataTextView"
-                android:text="空气自粮油"
                 android:textSize="@dimen/text_middle" />
 
             <TextView
                 android:id="@+id/tv_aqi_level"
-                style="@style/DataTextView"
-                android:text="AQI:34" />
+                style="@style/DataTextView" />
         </LinearLayout>
 
     </RelativeLayout>
@@ -41,23 +39,19 @@
 
         <TextView
             android:id="@+id/tv_aqi_pm2"
-            style="@style/DataTextView"
-            android:text="AQI:34" />
+            style="@style/DataTextView" />
 
         <TextView
             android:id="@+id/tv_aqi_pm10"
-            style="@style/DataTextView"
-            android:text="AQI:34" />
+            style="@style/DataTextView" />
 
         <TextView
             android:id="@+id/tv_aqi_s02"
-            style="@style/DataTextView"
-            android:text="AQI:34" />
+            style="@style/DataTextView" />
 
         <TextView
             android:id="@+id/tv_aqi_no2"
-            style="@style/DataTextView"
-            android:text="AQI:34" />
+            style="@style/DataTextView" />
 
     </LinearLayout>
 

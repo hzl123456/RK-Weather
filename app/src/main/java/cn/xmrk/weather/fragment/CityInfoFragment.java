@@ -137,9 +137,14 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     private void refreshContent(WeatherInfo response) {
-        mAdapter.refreshData(response);
+        if (info.mWeatherInfo == null) {
+            info.mWeatherInfo = response;
+            initContent();
+        } else {
+            info.mWeatherInfo = response;
+            mAdapter.refreshData(response);
+        }
         //数据库保存信息（主要保存天气信息）
-        info.mWeatherInfo = response;
         info.weatherString = CommonUtil.getGson().toJson(info.mWeatherInfo);
         dbHelper.saveChooseCityInfo(info);
         //数据加载完就关闭刷新的箭头
@@ -150,9 +155,11 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     private void initContent() {
-        mAdapter = new WeatherAdapter(info.mWeatherInfo, this);
-        rvContent.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        rvContent.setAdapter(mAdapter);
+        if (info.mWeatherInfo != null) {
+            mAdapter = new WeatherAdapter(info.mWeatherInfo, this);
+            rvContent.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+            rvContent.setAdapter(mAdapter);
+        }
     }
 
     private void loadWheatherInfo() {
@@ -186,9 +193,10 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
             loadData();
             isFirstFragment = false;
         }
-        //进行注册
-        EventBus.getDefault().register(this);
-
+        if (!EventBus.getDefault().isRegistered(this)) {
+            //进行注册
+            EventBus.getDefault().register(this);
+        }
         //展现通知
         NotificatinHelper.showNotification(info);
     }

@@ -2,91 +2,84 @@ package cn.xmrk.rkandroid.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
+import android.webkit.DownloadListener;
 
 import cn.xmrk.rkandroid.R;
+import cn.xmrk.rkandroid.widget.BaseWebViewClient;
+import cn.xmrk.rkandroid.widget.ProgressWebView;
 
 
 public class WebViewActivity extends BackableBaseActivity {
 
-	public static final String REQUEST_EXTRA_TITLE = "extraTitle";
-	public static final String REQUEST_EXTRA_URL = "extraUrl";
-	public static final String REQUEST_EXTRA_SHARE = "extraShare";
+    public static final String REQUEST_EXTRA_TITLE = "extraTitle";
+    public static final String REQUEST_EXTRA_URL = "extraUrl";
+    public static final String REQUEST_EXTRA_SHARE = "extraShare";
 
-	protected WebView wv;
+    protected ProgressWebView wv;
 
-	protected String url;
+    protected String url;
 
-	protected String title;
+    protected String title;
 
-	public static void start(Activity activity, String title, String url, boolean share) {
-		Intent _intent = new Intent(activity, WebViewActivity.class);
-		_intent.putExtra(REQUEST_EXTRA_TITLE, title);
-		_intent.putExtra(REQUEST_EXTRA_SHARE, share);
-		_intent.putExtra(REQUEST_EXTRA_URL, url);
-		activity.startActivity(_intent);
-	}
+    public static void start(Activity activity, String title, String url, boolean share) {
+        Intent _intent = new Intent(activity, WebViewActivity.class);
+        _intent.putExtra(REQUEST_EXTRA_TITLE, title);
+        _intent.putExtra(REQUEST_EXTRA_SHARE, share);
+        _intent.putExtra(REQUEST_EXTRA_URL, url);
+        activity.startActivity(_intent);
+    }
 
-	@Override
-	public void onBackPressed() {
-		if (wv != null && wv.canGoBack()) {
-			wv.goBack();
-		} else {
-			super.onBackPressed();
-		}
-	}
+    @Override
+    public void onBackPressed() {
+        if (wv != null && wv.canGoBack()) {
+            wv.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
-	private boolean startTypeActivity(String url) {
-		return false;
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_web);
+        wv = (ProgressWebView) findViewById(R.id.wv);
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_web);
-		wv = (WebView) findViewById(R.id.wv);
+        Intent intent = getIntent();
+        url = intent.getStringExtra(REQUEST_EXTRA_URL);
+        title = intent.getStringExtra(REQUEST_EXTRA_TITLE);
 
-		Intent intent = getIntent();
-		url = intent.getStringExtra(REQUEST_EXTRA_URL);
-		title = intent.getStringExtra(REQUEST_EXTRA_TITLE);
-		setTitle(title);
+        //设置标题
+        getSupportActionBar().setTitle(title);
 
-		wv.loadUrl(url);
+        wv.getSettings().setJavaScriptEnabled(true);
+        wv.getSettings().setDomStorageEnabled(true);
+        wv.getSettings().setSupportZoom(true);
+        wv.getSettings().setUseWideViewPort(true);
+        wv.getSettings().setLoadWithOverviewMode(true);
+        wv.getSettings().setBuiltInZoomControls(true);
 
-		wv.setWebChromeClient(new WebChromeClient() {
+        wv.requestFocus();
+        wv.loadUrl(url);
 
-			@Override
-			public void onReceivedTitle(WebView view, String title) {
-				super.onReceivedTitle(view, title);
-				if (title == null) {
-					setTitle(title);
-				}
-			}
+        wv.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                if (url != null && url.startsWith("http://"))
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            }
+        });
 
-		});
+        wv.setWebViewClient(new BaseWebViewClient());
+    }
 
-		WebSettings setting = wv.getSettings();
-		setting.setJavaScriptEnabled(true);
-		setting.setJavaScriptCanOpenWindowsAutomatically(false);
-		setting.setSupportMultipleWindows(false);
-		setting.setDisplayZoomControls(false);
-		setting.setSupportZoom(true);
-		setting.setBuiltInZoomControls(true);
-		setting.setUseWideViewPort(true);
-		setting.setLoadWithOverviewMode(true);
-		wv.setInitialScale(1);
-
-	}
-
-	@Override
-	protected void onDestroy() {
-		((ViewGroup) wv.getParent()).removeView(wv);
-		wv.destroy();
-		super.onDestroy();
-	}
+    @Override
+    protected void onDestroy() {
+        ((ViewGroup) wv.getParent()).removeView(wv);
+        wv.destroy();
+        super.onDestroy();
+    }
 
 }
