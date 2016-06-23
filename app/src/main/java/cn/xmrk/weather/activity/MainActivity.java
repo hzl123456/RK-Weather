@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                     new AlertDialog.Builder(MainActivity.this)
                             .setMessage("有权限未被允许使用，可在安全中心-权限管理中打开权限").setCancelable(false)
-                            .setPositiveButton("退出Keep", new DialogInterface.OnClickListener() {
+                            .setPositiveButton("退出Weather", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     finish();
