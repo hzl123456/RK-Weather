@@ -85,6 +85,16 @@ public class AqiInfoFragment extends BaseFragment {
                     mAqiView.setRang(aqi, width, height);
                 }
             });
+            if (aqi < 100) {
+                tvApiIntro.setTextColor(getResources().getColor(R.color.bg_title_bar));
+                tvApiLevel.setTextColor(getResources().getColor(R.color.bg_title_bar));
+            } else if (aqi < 200) {
+                tvApiIntro.setTextColor(getResources().getColor(R.color.color_text_yellow));
+                tvApiLevel.setTextColor(getResources().getColor(R.color.color_text_yellow));
+            } else {
+                tvApiIntro.setTextColor(getResources().getColor(R.color.color_text_black));
+                tvApiLevel.setTextColor(getResources().getColor(R.color.color_text_black));
+            }
             tvApiIntro.setText("空气" + info.getAqi().getQuality());
             tvApiLevel.setText("AQI:" + (aqi == 0 ? "未知" : aqi));
             tvApiPm2_5.setText("PM2.5:" + info.getAqi().getPm2_5());
