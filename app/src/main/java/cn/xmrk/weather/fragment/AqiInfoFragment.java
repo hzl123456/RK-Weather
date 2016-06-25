@@ -72,7 +72,7 @@ public class AqiInfoFragment extends BaseFragment {
 
     public void initData() {
         if (info != null) {
-            final int aqi = StringUtil.isEmptyString(info.getAqi().getAqi()) ? 0 : Integer.parseInt(info.getAqi().getAqi());
+           final int aqi = StringUtil.isEmptyString(info.getAqi().getAqi()) ? 50 : Integer.parseInt(info.getAqi().getAqi());
             //完成测量之后再去设置信息
             ViewTreeObserver
                     vto = mAqiView.getViewTreeObserver();
