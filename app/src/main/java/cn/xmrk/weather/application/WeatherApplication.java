@@ -1,6 +1,5 @@
 package cn.xmrk.weather.application;
 
-import com.baidu.mapapi.SDKInitializer;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -8,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 import cn.xmrk.rkandroid.application.RKApplication;
 import cn.xmrk.rkandroid.config.IRKConfig;
 import cn.xmrk.weather.helper.UpdateTimeHelper;
-import cn.xmrk.weather.util.CityUtil;
 import okhttp3.OkHttpClient;
 
 /**
@@ -50,10 +48,6 @@ public class WeatherApplication extends RKApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        //这边让它去加载城市信息
-        CityUtil.getInstance();
-        //加载百度地图
-        SDKInitializer.initialize(this);
         //配置okhttp
         initClient();
         //后台定时

@@ -3,6 +3,8 @@ package cn.xmrk.weather.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,8 +52,30 @@ public class AddCityActivity extends BaseActivity implements OnQuickSideBarTouch
         setContentView(R.layout.activity_addcity);
         initView();
         initToolbar();
-        initRecycle();
+        loadCityInfo();
     }
+
+    private void loadCityInfo() {
+        getPDM().showProgress("正在加载城市信息");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //这边加载城市信息
+                CityUtil.getInstance();
+                mHandler.sendEmptyMessage(0);
+            }
+        }).start();
+    }
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void dispatchMessage(Message msg) {
+            if (msg.what == 0) {
+                getPDM().dismiss();
+                initRecycle();
+            }
+        }
+    };
 
     private void initToolbar() {
         final View view = getLayoutInflater().inflate(R.layout.title_addcity, null);

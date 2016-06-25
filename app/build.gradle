@@ -9,9 +9,14 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.1"
+        versionName "1.0.3"
     }
     buildTypes {
+        debug{
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -22,7 +27,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':rkandroid')
-    compile files('libs/BaiduLBS_Android.jar')
     compile 'com.bigkoo:quicksidebar:1.0.1'
     //recyclerview分组，顶部浮动
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
