@@ -116,9 +116,6 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    public boolean onBackPressed() {
-        return false;
-    }
 
     public boolean isShow() {
         return isShow;
@@ -158,6 +155,10 @@ public abstract class BaseFragment extends Fragment {
         if (_sc != null) {
             _sc.onFragmentHide(getStatisTag());
         }
+    }
+
+   public boolean onBackPressed(){
+        return true;
     }
 
     /**

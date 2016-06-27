@@ -55,27 +55,47 @@
 -keep class sun.misc.Unsafe { *; }
 -keep class com.google.gson.examples.android.model. { *; }
 
-
-# EventBus混淆
--keepclassmembers class * {
+# eventbus的混淆
+-keepclassmembers class ** {
     public void onEvent*(**);
+    public void onEventMainThread*(**);
 }
--keepclassmembers class * {
-   public void onEventMainThread*(**);
+-keepclassmembers class * extends de.greenrobot.event.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
 }
 
-# support不混淆
--dontwarn android.support.**
--keep public class * extends android.support.**
--keep class android.support.** { *; }
+# support的v4和v7包
+-keep class android.support.v4.** { *; }
+-keep interface android.support.v4.** { *; }
+-keep class android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
 
-# 一些第三方包不混淆
+
+# 第三方的包没有混淆的必要
 -dontwarn org.apache.log4j.**
 -keep class org.apache.log4j.**{*;}
+
 -dontwarn org.apache.http.**
 -keep class org.apache.http.**{*;}
+
 -dontwarn android.net.http.**
 -keep class android.net.http.**{*;}
+
 -dontwarn com.j256.ormlite.**
 -keep class com.j256.ormlite.**{*;}
 
+-dontwarn cn.pedant.SweetAlert.**
+-keep class cn.pedant.SweetAlert.**{*;}
+
+-dontwarn com.baidu.**
+-keep class com.baidu.**{*;}
+
+-dontwarn org.greenrobot.eventbus.**
+-keep class org.greenrobot.eventbus.**{*;}
+
+# 源文件和行号的信息不混淆
+-keepattributes SourceFile,LineNumberTable
+
+# 保证poji不被混淆
+-dontwarn cn.xmrk.weather.pojo.**
+-keep class cn.xmrk.weather.pojo.**{*;}

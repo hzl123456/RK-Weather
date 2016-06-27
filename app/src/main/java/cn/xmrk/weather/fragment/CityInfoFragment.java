@@ -80,6 +80,7 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
         return R.layout.fragment_cityinfo;
     }
 
+
     @Override
     protected void initOnCreateView(boolean isCreate) {
         super.initOnCreateView(isCreate);
@@ -195,7 +196,7 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
         }
         if (!EventBus.getDefault().isRegistered(this)) {
             //进行注册
-            EventBus.getDefault().register(this);
+           EventBus.getDefault().register(this);
         }
         //展现通知
         NotificatinHelper.showNotification(info);
@@ -212,12 +213,19 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
         }
     }
 
-
     /**
      * 收到消息就进行更新
      **/
     @Subscribe
     public void onEventMainThread(String time) {
         onRefresh();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if (mAdapter != null && mAdapter.getFragments() != null && mAdapter.getFragments().size() > 0) {
+            return mAdapter.getFragments().get(0).onBackPressed();
+        }
+        return super.onBackPressed();
     }
 }

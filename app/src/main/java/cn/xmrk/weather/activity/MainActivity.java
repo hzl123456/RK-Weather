@@ -137,8 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             for (int i = 0; i < sp.length; i++) {
                 sp[i] = needToPer.get(i);
             }
-            requestPermissions(sp,
-                    REQUEST_CODE_ASK_PERMISSIONS);
+            requestPermissions(sp,REQUEST_CODE_ASK_PERMISSIONS);
         }
     }
 
@@ -148,7 +147,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                     new AlertDialog.Builder(MainActivity.this)
-                            .setMessage("有权限未被允许使用，可在安全中心-权限管理中打开权限").setCancelable(false)
+                            .setMessage("有权限未被允许使用，可在安全中心-权限管理中打开权限")
+                            .setCancelable(false)
                             .setPositiveButton("退出Weather", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -404,6 +404,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(MainActivity.class);
                 finish();
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(fragments.size()>0&&fragments.get(viewPager.getCurrentItem()).onBackPressed()){
+            super.onBackPressed();
         }
     }
 }

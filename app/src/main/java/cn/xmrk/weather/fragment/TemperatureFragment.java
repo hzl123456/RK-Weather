@@ -122,4 +122,13 @@ public class TemperatureFragment extends BaseFragment {
             }
         });
     }
+
+    @Override
+    public boolean onBackPressed() {
+        if(mHelper!=null&&mHelper.isShowing()){
+            mHelper.dismiss();
+            return false;
+        }
+        return super.onBackPressed();
+    }
 }

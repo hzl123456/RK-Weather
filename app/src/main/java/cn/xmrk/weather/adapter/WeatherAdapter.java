@@ -73,6 +73,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         };
     }
 
+    public List<BaseFragment> getFragments() {
+        return fragments;
+    }
+
     public void refreshData(WeatherInfo mData) {
         this.mData = mData;
         notifyDataSetChanged();
@@ -167,7 +171,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemCount() {
         //为空的时候就表示没有，否则就是index的长度加上上面2个
-        return mData == null ? 0 : 2 + mData.getIndex().size();
+        return mData == null ? 0 : 2 + (mData.getIndex() == null ? 0 : mData.getIndex().size());
     }
 
     /**
