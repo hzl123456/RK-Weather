@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 
 /**
 *
-* @author julio
 */
 public class RoundImageView extends CustomImageView {
 	

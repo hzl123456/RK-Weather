@@ -31,6 +31,7 @@ public class OpenHelper extends OrmLiteSqliteOpenHelper {
     private final Logger log = Logger.getLogger("OpenHelper");
 
     public static final String DB_NAME = "KeepDb";
+
     public static final int DB_VERSION = 1;
 
     private transient Integer useCount = 0;

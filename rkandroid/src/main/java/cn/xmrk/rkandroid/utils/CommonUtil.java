@@ -57,7 +57,6 @@ public class CommonUtil {
 
     protected static Toast toast;
 
-
     /**
      * uri转化为图片路径
      *

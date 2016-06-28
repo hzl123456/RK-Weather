@@ -2,7 +2,6 @@ package cn.xmrk.weather.util;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -107,7 +106,6 @@ public class CityUtil {
             cityInfos.add(info);
         }
         cursor.close();
-        Log.i("city-->", cityInfos.size() + "");
     }
 
     /**

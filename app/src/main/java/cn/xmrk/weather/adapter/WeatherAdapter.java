@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -109,13 +108,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (holder.pager.getAdapter() == null) {
                 holder.pager.setAdapter(mAdapter);
             }
-            for (int i = 0; i < holder.pager.getAdapter().getCount(); i++) {
-                if (holder.pager.getAdapter() instanceof FragmentPagerAdapter) {
-                    FragmentPagerAdapter adapter = (FragmentPagerAdapter) holder.pager.getAdapter();
-                    Log.i("fragment-->", adapter.getItem(i).toString());
-                }
-            }
-            Log.i("size-->", cityFragment.getActivity().getSupportFragmentManager().getFragments().size() + "");
         } else if (position == 1) {//一周的天气和温度
             final TempViewHolder holder = (TempViewHolder) itemHolder;
             final int[] highTemp = new int[mData.getDaily().size()];
@@ -147,8 +139,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     holder.tempLow.setmTemperature(lowTemp, width, height);
                 }
             });
-
-
         } else {//index的指数
             IndexViewHolder holder = (IndexViewHolder) itemHolder;
             holder.ibIndexImg.setImageResource(imageRes[position - 2]);

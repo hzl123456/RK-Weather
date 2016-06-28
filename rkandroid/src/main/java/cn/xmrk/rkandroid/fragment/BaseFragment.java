@@ -19,8 +19,7 @@ import cn.xmrk.rkandroid.config.RKConfigHelper;
 import cn.xmrk.rkandroid.config.StatisticsConfig;
 
 /**
- * @author 思落羽
- *         2014年11月4日 下午3:59:50
+ * 2014年11月4日 下午3:59:50
  */
 public abstract class BaseFragment extends Fragment {
     private final Logger log = Logger.getLogger(getClass());
@@ -93,6 +92,7 @@ public abstract class BaseFragment extends Fragment {
      * @param isCreate 表示为 onCreateView是首次打开
      */
     protected void initOnCreateView(boolean isCreate) {
+
     }
 
 

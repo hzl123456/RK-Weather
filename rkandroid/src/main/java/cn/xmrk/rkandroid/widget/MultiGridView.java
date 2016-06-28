@@ -6,8 +6,6 @@ import android.widget.GridView;
 
 /**
  * 可以在ScrollView中使用的GridView
- * @author 思落羽
- * 2014年9月15日 下午8:22:22
  *
  */
 public class MultiGridView extends GridView {

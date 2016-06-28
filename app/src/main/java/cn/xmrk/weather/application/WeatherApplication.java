@@ -33,15 +33,6 @@ public class WeatherApplication extends RKApplication {
                 return false;
             }
 
-            @Override
-            public int getNetTimeout() {
-                return 0;
-            }
-
-            @Override
-            public int getNetRetryCount() {
-                return 0;
-            }
         };
     }
 
@@ -53,7 +44,6 @@ public class WeatherApplication extends RKApplication {
         //后台定时
         UpdateTimeHelper.getInstance();
     }
-
 
     public void initClient(){
         OkHttpClient okHttpClient = new OkHttpClient.Builder()

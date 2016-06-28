@@ -6,8 +6,6 @@ import android.widget.ListView;
 
 /**
  * 可以在ScrollVIew中使用的ListView而不会起冲突
- * @author 思落羽
- * 2014年9月15日 下午8:24:40
  *
  */
 public class MultiListView extends ListView {

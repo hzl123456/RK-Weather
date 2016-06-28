@@ -17,7 +17,6 @@ import cn.xmrk.weather.R;
  */
 public class TemperatureView extends View {
 
-
     /**
      * 文字在上还是下，默认在下
      **/

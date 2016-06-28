@@ -10,7 +10,6 @@ import android.widget.TextView;
 /**
  * 取消长按响应，支持手指上滑可以调用回调 主要是发送语音的按钮用到
  * 
- * @author 思落羽 2014年8月13日 上午10:37:49
  *
  */
 public class LeaveButton extends TextView {

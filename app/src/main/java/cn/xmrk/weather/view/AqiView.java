@@ -32,6 +32,7 @@ public class AqiView extends View {
      * 画图的画笔
      **/
     private Paint mPaint;
+
     /**
      * 画图的画笔
      **/

@@ -44,7 +44,6 @@ public abstract  class BaseRecycleAdapter<T> extends RecyclerView.Adapter<Recycl
 
     @Override
     public int getItemCount() {
-
         return mData == null ? 0 : mData.size();
     }
 

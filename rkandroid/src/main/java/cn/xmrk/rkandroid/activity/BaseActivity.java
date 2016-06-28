@@ -21,7 +21,7 @@ import cn.xmrk.rkandroid.config.StatisticsConfig;
 import cn.xmrk.rkandroid.utils.DialogUtil;
 
 /**
- * @author 思落羽 2014年10月28日 下午5:03:58
+ * 2014年10月28日 下午5:03:58
  */
 public abstract class BaseActivity extends AppCompatActivity {
 

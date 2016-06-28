@@ -228,4 +228,5 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
         }
         return super.onBackPressed();
     }
+
 }

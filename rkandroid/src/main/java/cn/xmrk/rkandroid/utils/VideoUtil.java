@@ -26,7 +26,9 @@ public class VideoUtil {
      */
     public static final int REQUEST_PICK = 202;
 
+
     private Activity mActivity;
+
     private Fragment mFragment;
 
     public VideoUtil(Activity activity) {

@@ -14,6 +14,7 @@ import okhttp3.Response;
  * Created by Au61 on 2016/6/16.
  */
 public abstract class WeatherCallback extends Callback<WeatherInfo> {
+
     @Override
     public WeatherInfo parseNetworkResponse(Response response, int id) throws Exception {
         String message = response.body().string();

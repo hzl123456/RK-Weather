@@ -12,7 +12,6 @@ import cn.xmrk.rkandroid.utils.CommonUtil;
 /**
  * 宽度与屏幕相等，高度根据图片拉伸后做适配
  *
- * @author 思落羽 2014年9月26日 下午5:20:32
  */
 public class ScaleScreenImageView extends ImageView {
 
@@ -35,7 +34,6 @@ public class ScaleScreenImageView extends ImageView {
             int height = (int) (imgH * es);
             ViewGroup.LayoutParams params = getLayoutParams();
             params.height = height;
-            System.out.println("width-->" + width + "height-->" + height);
             setLayoutParams(params);
         }
     }

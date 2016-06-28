@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final int ADD_CITY_CODE = 88;
     private final int EDIT_CITY_CODE = 89;
 
-
     private Toolbar toolbar;
 
     private ViewPager viewPager;
@@ -75,14 +74,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 当前城市信息
      **/
     private TextView tvCity;
+
     /**
      * 点击分享
      **/
     private ImageButton ibShare;
+
     /**
      * 标题
      **/
     private TextView tvTitle;
+
 
     private FragmentPagerAdapter mAdapter;
 
@@ -190,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             chooseCityInfo.isChooseCity = true;
                         }
                         dbHelper.saveChooseCityInfo(chooseCityInfo);
-
                         //添加xin的fragment，并且跳转到当前页
                         fragments.add(CityInfoFragment.newInstance(chooseCityInfo, fragments.size() == 0, "fragment" + fragments.size()));
                         //刷新adapter
@@ -220,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getWindow().setStatusBarColor(getResources().getColor(R.color.bg_title_bar));
         }
     }
+
 
     private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);

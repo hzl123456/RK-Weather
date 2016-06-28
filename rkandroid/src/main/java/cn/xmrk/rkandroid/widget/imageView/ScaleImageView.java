@@ -16,8 +16,6 @@ import cn.xmrk.rkandroid.utils.CommonUtil;
  * 宽度与父控件相等，高度根据图片拉伸后做适配
  * 设置ratio_width，ratio_height可以设置它的宽高比，强制比例
  *
- * @author 思落羽
- *         2014年9月26日 下午5:20:32
  */
 public class ScaleImageView extends ImageView {
 

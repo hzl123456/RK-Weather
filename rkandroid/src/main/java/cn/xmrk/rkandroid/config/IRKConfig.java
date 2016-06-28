@@ -22,14 +22,4 @@ public interface IRKConfig {
      */
     boolean isLeakWatch();
 
-    /**
-     * 网络连接超时时间
-     */
-    int getNetTimeout();
-
-    /**
-     * 网络连接重试次数
-     */
-    int getNetRetryCount();
-
 }
