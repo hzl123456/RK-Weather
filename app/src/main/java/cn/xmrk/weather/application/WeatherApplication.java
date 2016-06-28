@@ -33,6 +33,16 @@ public class WeatherApplication extends RKApplication {
                 return false;
             }
 
+            @Override
+            public int getNetTimeout() {
+                return 0;
+            }
+
+            @Override
+            public int getNetRetryCount() {
+                return 0;
+            }
+
         };
     }
 

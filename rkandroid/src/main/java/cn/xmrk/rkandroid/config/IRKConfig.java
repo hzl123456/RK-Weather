@@ -22,4 +22,8 @@ public interface IRKConfig {
      */
     boolean isLeakWatch();
 
+
+    int getNetTimeout();
+
+    int getNetRetryCount();
 }

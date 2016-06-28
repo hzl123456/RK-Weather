@@ -9,19 +9,46 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.3"
+        versionName "1.0.4"
     }
+
+    signingConfigs {
+        release {
+            keyAlias 'weather'
+            keyPassword "123456"
+            storeFile file('weather.jks')
+            storePassword "123456"
+        }
+
+    }
+
+    //导出的apk名称为。weather-1.0.2（appname+版本名称）
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    "weather-${variant.versionName}.apk".toLowerCase())
+        }
+    }
+
     buildTypes {
-        debug{
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         release {
             minifyEnabled true
+            //release导出版本的时候采用的configs
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
