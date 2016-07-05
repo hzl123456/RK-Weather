@@ -19,7 +19,6 @@ android {
             storeFile file('weather.jks')
             storePassword "123456"
         }
-
     }
 
     //导出的apk名称为。weather-1.0.2（appname+版本名称）

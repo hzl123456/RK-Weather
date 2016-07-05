@@ -36,7 +36,6 @@ public abstract  class BaseRecycleAdapter<T> extends RecyclerView.Adapter<Recycl
         return null;
     }
 
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 

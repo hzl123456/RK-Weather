@@ -98,7 +98,7 @@ public class MyQuickSideBarView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mHeight = getHeight() - mPaddingTop;
         mWidth = getWidth();
-        mItemHeight = mHeight / mLetters.size();
+        mItemHeight = mHeight / (mLetters.size() == 0 ? 1 : mLetters.size());
     }
 
     @Override

@@ -75,7 +75,7 @@ public class CityInfoAdapter extends BaseRecycleAdapter<CityInfo> implements Sti
         public ItemViewHolder(View itemView) {
             super(itemView);
             rlCity = (RelativeLayout) itemView.findViewById(R.id.rl_vity);
-            tvCityChild = (TextView) itemView.findViewById(R.id.tv_city_child);
+            tvCityChild = (TextView)  itemView.findViewById(R.id.tv_city_child);
             tvCityParent = (TextView) itemView.findViewById(R.id.tv_city_parent);
             tvCityProvcn = (TextView) itemView.findViewById(R.id.tv_city_provcn);
         }

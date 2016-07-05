@@ -23,12 +23,11 @@ public class AboutUsActivity extends BackableBaseActivity{
         initView();
     }
 
-
     private void findViews(){
         tvVersion= (TextView) findViewById(R.id.tv_banben);
         tvVersion.setText("当前版本："+CommonUtil.getAppVersionName());
-
     }
+
     private void initView(){
         getSupportActionBar().setTitle("关于Weather");
     }

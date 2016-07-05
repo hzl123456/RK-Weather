@@ -39,7 +39,7 @@ public class CityUtil {
         if (mCityUtil == null) {
             mCityUtil = new CityUtil();
             //获取数据库信息
-            mCityUtil.db=mCityUtil.loadDbFile();
+            mCityUtil.db = mCityUtil.loadDbFile();
             //然后记载数据信息
             mCityUtil.loadCityInfos();
         }
@@ -50,7 +50,7 @@ public class CityUtil {
      * 读取数据库文件
      **/
     private SQLiteDatabase loadDbFile() {
-        File dbFile = new File(CommonUtil.getDir() + File.separator + "city.db");
+        File dbFile = new File(new File(CommonUtil.getDir()).getParent() + File.separator + "city.db");
         if (!dbFile.exists()) {
             InputStream inputStream = null;
             FileOutputStream fos = null;
@@ -112,8 +112,8 @@ public class CityUtil {
      * 根据城市列表获取城市信息
      **/
     public CityInfo checkCityInfo(String cityName) {
-        for(int i=0;i<cityInfos.size();i++){
-            if(StringUtil.isEqualsString(cityName,cityInfos.get(i).city_child)){
+        for (int i = 0; i < cityInfos.size(); i++) {
+            if (StringUtil.isEqualsString(cityName, cityInfos.get(i).city_child)) {
                 return cityInfos.get(i);
             }
         }

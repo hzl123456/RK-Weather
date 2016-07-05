@@ -147,11 +147,9 @@ public class AddCityActivity extends BaseActivity implements OnQuickSideBarTouch
                         info.city = cityInfo;
                         info.cityString = CommonUtil.getGson().toJson(cityInfo);
                         //如果数量为0就设置为当前城市
-                        if (dbHelper.getChooseCityInfoCount() == 0) {
-                            info.isChooseCity = true;
+                        if (dbHelper.getChooseCityInfoCount() == 0) {info.isChooseCity = true;
                         }
                         dbHelper.saveChooseCityInfo(info);
-
                         //进行数据的回调，让主页面进行显示
                         Intent intent = new Intent();
                         intent.putExtra("data", info);
@@ -186,11 +184,9 @@ public class AddCityActivity extends BaseActivity implements OnQuickSideBarTouch
         }
         //不自定义则默认26个字母
         quickSideBarView.setLetters(customLetters);
-
         //设置头部
         mDecoration = new StickyRecyclerHeadersDecoration(mAdapter);
         rv_city.addItemDecoration(mDecoration);
-
     }
 
     @Override

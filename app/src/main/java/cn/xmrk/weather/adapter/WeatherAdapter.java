@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -99,6 +100,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder itemHolder, int position) {
+        Log.i("position-->",position+"");
         if (position <= 2) {//0,1,2的需要占满两格
             prepareHeaderFooter(itemHolder);
         }

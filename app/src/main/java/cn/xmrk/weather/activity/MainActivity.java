@@ -12,6 +12,8 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -36,6 +38,7 @@ import java.util.List;
 
 import cn.xmrk.rkandroid.activity.WebViewActivity;
 import cn.xmrk.rkandroid.utils.CommonUtil;
+import cn.xmrk.rkandroid.utils.DialogUtil;
 import cn.xmrk.rkandroid.utils.FileUtil;
 import cn.xmrk.rkandroid.utils.StringUtil;
 import cn.xmrk.weather.R;
@@ -94,18 +97,52 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private LocationHelper mLocationHelper;
 
 
+    private DialogUtil pdm;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showVersion();
+    }
+
+    /**
+     * 加载数据库信息
+     **/
+    private void loadCityInfo() {
+        if (pdm == null) {
+            pdm = new DialogUtil(this);
+        }
+        pdm.showProgress("正在加载城市信息");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //这边加载城市信息
+                CityUtil.getInstance();
+                mHandler.sendEmptyMessage(0);
+            }
+        }).start();
 
     }
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void dispatchMessage(Message msg) {
+            if (msg.what == 0) {
+                if (pdm != null) {
+                    pdm.dismiss();
+                }
+                canUse();
+            }
+        }
+    };
+
 
     private void showVersion() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//当前的sdk版本大于等于23
             insertDummyContactWrapper();
         } else {
-            canUse();
+            loadCityInfo();
         }
     }
 
@@ -123,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @TargetApi(Build.VERSION_CODES.M)
     private void insertDummyContactWrapper() {
         //需要手动请求的权限，（文件读写,定位）
-        String[] needPermission = new String[]{  Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION};
+        String[] needPermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION};
         //未允许使用的权限
         List<String> needToPer = new ArrayList<>();
         for (int i = 0; i < needPermission.length; i++) {
@@ -139,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             for (int i = 0; i < sp.length; i++) {
                 sp[i] = needToPer.get(i);
             }
-            requestPermissions(sp,REQUEST_CODE_ASK_PERMISSIONS);
+            requestPermissions(sp, REQUEST_CODE_ASK_PERMISSIONS);
         }
     }
 
@@ -162,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     return;
                 }
             }
-            canUse();
+            loadCityInfo();
         }
     }
 
@@ -411,7 +448,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if(fragments.size()>0&&fragments.get(viewPager.getCurrentItem()).onBackPressed()){
+        if (fragments.size() > 0 && fragments.get(viewPager.getCurrentItem()).onBackPressed()) {
             super.onBackPressed();
         }
     }
