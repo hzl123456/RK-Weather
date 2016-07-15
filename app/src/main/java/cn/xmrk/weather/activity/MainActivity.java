@@ -303,7 +303,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
         //设置viewpager的adapter
         viewPager.setAdapter(mAdapter);
-
         //设置viewpager的滑动监听，当滑动的时候再去加载数据
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

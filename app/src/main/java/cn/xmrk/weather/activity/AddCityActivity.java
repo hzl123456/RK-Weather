@@ -106,11 +106,10 @@ public class AddCityActivity extends BaseActivity implements OnQuickSideBarTouch
                 String input = etSearch.getText().toString();
                 mAdapter.reflush(CityUtil.getInstance().getChooseCityInfo(input));
                 if (StringUtil.isEmptyString(input)) {
-                    quickSideBarTipsView.setVisibility(View.VISIBLE);
                     quickSideBarView.setVisibility(View.VISIBLE);
+
                     rv_city.addItemDecoration(mDecoration);
                 } else {
-                    quickSideBarTipsView.setVisibility(View.GONE);
                     quickSideBarView.setVisibility(View.GONE);
                     rv_city.removeItemDecoration(mDecoration);
                 }
@@ -147,7 +146,8 @@ public class AddCityActivity extends BaseActivity implements OnQuickSideBarTouch
                         info.city = cityInfo;
                         info.cityString = CommonUtil.getGson().toJson(cityInfo);
                         //如果数量为0就设置为当前城市
-                        if (dbHelper.getChooseCityInfoCount() == 0) {info.isChooseCity = true;
+                        if (dbHelper.getChooseCityInfoCount() == 0) {
+                            info.isChooseCity = true;
                         }
                         dbHelper.saveChooseCityInfo(info);
                         //进行数据的回调，让主页面进行显示

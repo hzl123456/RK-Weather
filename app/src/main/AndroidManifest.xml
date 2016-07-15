@@ -41,6 +41,7 @@
         <!--添加城市-->
         <activity
             android:name=".activity.AddCityActivity"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--管理城市-->
         <activity
