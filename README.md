@@ -1,4 +1,7 @@
 # RK-Weather
+   添加组件功能，显示当前城市的基本天气信息，点击打开app首页
+![image](https://github.com/hzl123456/RK-Weather/blob/master/screen/Screenshot_2016-08-16-16-47-39.png)
+
    RK-Weather是一款查看天气的android应用软件，UI基本上参了一款叫做天气的软件，天气数据来自与网络，api是从百度api store上获取的。
 具体的地址链接为：http://apistore.baidu.com/apiworks/servicedetail/2222.html
 
