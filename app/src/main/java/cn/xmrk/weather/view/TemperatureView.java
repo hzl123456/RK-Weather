@@ -34,6 +34,7 @@ public class TemperatureView extends View {
 
     private float mItemHeight;
     private float mItemWidth;
+
     /**
      * 上下留出的距离
      **/

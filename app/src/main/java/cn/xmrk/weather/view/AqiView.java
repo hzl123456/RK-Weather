@@ -17,7 +17,9 @@ import cn.xmrk.weather.R;
  */
 public class AqiView extends View {
 
+
     private CountDownTimer mCountDownTimer;
+
     /**
      * 圆的外部矩形框
      **/
@@ -38,8 +40,10 @@ public class AqiView extends View {
      **/
     private Paint mCiclePaint;
 
+
     private float mWidth;
     private float mHeight;
+
     private float topBottomPadding;
 
     private int paintWidth;

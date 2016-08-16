@@ -30,6 +30,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,8 +42,8 @@
         <!--添加城市-->
         <activity
             android:name=".activity.AddCityActivity"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <!--管理城市-->
         <activity
             android:name=".activity.EditCityActivity"
@@ -55,6 +56,25 @@
         <activity
             android:name=".activity.AboutUsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--桌面应用图标使用的receiver和activity-->
+        <receiver android:name=".appwidget.WeatherWidgetProvider">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_provider" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".appwidget.WeatherWidgetConfigure"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

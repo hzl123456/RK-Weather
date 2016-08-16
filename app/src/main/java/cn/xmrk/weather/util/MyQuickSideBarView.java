@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * Created by Au61 on 2016/6/15.
+ *
  * 这个库的QuickSideBarView感觉有点问题就自己写了个
  */
 public class MyQuickSideBarView extends View {

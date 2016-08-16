@@ -1,5 +1,6 @@
 package cn.xmrk.weather.fragment;
 
+import android.appwidget.AppWidgetManager;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import cn.xmrk.rkandroid.utils.CommonUtil;
 import cn.xmrk.weather.R;
 import cn.xmrk.weather.activity.MainActivity;
 import cn.xmrk.weather.adapter.WeatherAdapter;
+import cn.xmrk.weather.appwidget.WeatherWidgetProvider;
 import cn.xmrk.weather.db.ChooseCityInfoDbHelper;
 import cn.xmrk.weather.helper.NotificatinHelper;
 import cn.xmrk.weather.net.BaseRequest;
@@ -40,7 +42,6 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
 
     private AutoSwipeRefreshLayout sfRefresh;
 
-
     /**
      * 包含各种信息的content
      **/
@@ -60,6 +61,7 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
      * 给定的一个标志
      **/
     public String fragmentTag;
+
 
     public static CityInfoFragment newInstance(ChooseCityInfo info, boolean isFirstFragment, String fragmentTag) {
         CityInfoFragment f = new CityInfoFragment();
@@ -152,6 +154,15 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
         if (sfRefresh.isRefreshing()) {
             sfRefresh.setRefreshing(false);
             hasRefresh = true;
+        }
+
+        //顺便更新下信息,感觉也没啥软用
+        try {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
+            WeatherWidgetProvider.updateAppWidget(getActivity(), appWidgetManager,
+                    new ChooseCityInfoDbHelper().getChooseCityInfoList().get(0).mWeatherInfo);
+        }catch (Exception e){
+
         }
     }
 

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_content"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@drawable/bg_reng_title_bar"
+    android:clickable="true"
+    android:focusable="true"
+    >
+
+    <ImageView
+        android:id="@+id/iv_weather"
+        android:layout_width="50dp"
+        android:layout_centerVertical="true"
+        android:layout_height="50dp"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/ic_launcher" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_toRightOf="@+id/iv_weather">
+
+        <TextView
+            android:id="@+id/tv_t_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="31°"
+            android:textColor="@color/bg_white"
+            android:textSize="@dimen/text_big" />
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="厦门"
+            android:textColor="@color/bg_white"
+            android:textSize="@dimen/text_big" />
+
+        <TextView
+            android:id="@+id/tv_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="多云"
+            android:textColor="@color/bg_white"
+            android:textSize="@dimen/text_big" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="25dp"
+            android:text="20:00更新"
+            android:textColor="@color/bg_white"
+            android:textSize="@dimen/text_big" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
