@@ -56,4 +56,6 @@ dependencies {
     compile 'com.bigkoo:quicksidebar:1.0.1'
     //recyclerview分组，顶部浮动
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
 }

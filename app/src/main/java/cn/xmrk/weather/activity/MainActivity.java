@@ -12,8 +12,6 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -48,6 +46,10 @@ import cn.xmrk.weather.helper.LocationHelper;
 import cn.xmrk.weather.pojo.ChooseCityInfo;
 import cn.xmrk.weather.pojo.CityInfo;
 import cn.xmrk.weather.util.CityUtil;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -114,28 +116,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             pdm = new DialogUtil(this);
         }
         pdm.showProgress("正在加载城市信息");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //这边加载城市信息
-                CityUtil.getInstance();
-                mHandler.sendEmptyMessage(0);
-            }
-        }).start();
+        Observable
+                .create(new Observable.OnSubscribe<Object>() {
+                    @Override
+                    public void call(Subscriber<? super Object> subscriber) {
+                        CityUtil.getInstance();
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())//启动的线程
+                .observeOn(AndroidSchedulers.mainThread())//回调的线程
+                .subscribe(new Subscriber<Object>() {
+                    @Override
+                    public void onNext(Object obj) {
+                        if (pdm != null) {
+                            pdm.dismiss();
+                        }
+                        canUse();
+                    }
 
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
     }
-
-    private Handler mHandler = new Handler() {
-        @Override
-        public void dispatchMessage(Message msg) {
-            if (msg.what == 0) {
-                if (pdm != null) {
-                    pdm.dismiss();
-                }
-                canUse();
-            }
-        }
-    };
 
 
     private void showVersion() {
@@ -394,7 +404,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_typhone://全球台风
@@ -439,8 +448,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 viewPager.setCurrentItem(fragments.size() - 1);
             } else if (requestCode == EDIT_CITY_CODE) {//管理城市的回
                 //重新启动下
-                startActivity(MainActivity.class);
                 finish();
+                startActivity(MainActivity.class);
             }
         }
     }

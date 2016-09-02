@@ -33,6 +33,7 @@ public abstract class BaseFragment extends Fragment {
      */
     protected transient boolean isShowDispatch = false;
 
+
     public View getContentView() {
         return contentView;
     }

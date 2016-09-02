@@ -2,8 +2,6 @@ package cn.xmrk.weather.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -18,6 +16,10 @@ import cn.xmrk.weather.adapter.ChooseCityAdapter;
 import cn.xmrk.weather.adapter.helper.SimpleItemTouchHelperCallback;
 import cn.xmrk.weather.db.ChooseCityInfoDbHelper;
 import cn.xmrk.weather.pojo.ChooseCityInfo;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Au61 on 2016/6/15.
@@ -29,37 +31,54 @@ public class EditCityActivity extends BackableBaseActivity {
     private ChooseCityInfoDbHelper dbHelper;
     private ItemTouchHelper mItemTouchHelper;
 
+
     /**
      * 城市信息列表
      **/
     private List<ChooseCityInfo> chooseCityInfos;
 
-    private Handler mHandler = new Handler() {
-        @Override
-        public void dispatchMessage(Message msg) {
-            if (msg.what == 0) {
-                getPDM().dismiss();
-                initRecycle();
-            }
-        }
-    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editcity);
         initView();
-        /**
-         * 子线程加载数据库信息
-         * **/
+        loadDbInfo();
+
+    }
+
+    /**
+     * 加载数据库信息
+     **/
+    private void loadDbInfo() {
         getPDM().showProgress("正在加载城市信息");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                chooseCityInfos = dbHelper.getChooseCityInfoList();
-                mHandler.sendEmptyMessage(0);
-            }
-        }).start();
+        Observable
+                .create(new Observable.OnSubscribe<Object>() {
+                    @Override
+                    public void call(Subscriber<? super Object> subscriber) {
+                        chooseCityInfos = dbHelper.getChooseCityInfoList();
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())//启动的线程
+                .observeOn(AndroidSchedulers.mainThread())//回调的线程
+                .subscribe(new Subscriber<Object>() {
+                    @Override
+                    public void onNext(Object obj) {
+                        getPDM().dismiss();
+                        initRecycle();
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
     }
 
     private void initView() {

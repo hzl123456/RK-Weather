@@ -21,6 +21,7 @@ public class RKUtil {
         }
         Glide.with(RKApplication.getInstance()).load(url).dontAnimate().placeholder(generateDisplayDrawable(res)).into(iv);
     }
+
     //加载网络的图片
     public static void displayImage(String url, ImageView iv, int res) {
         if (url != null) {
@@ -39,6 +40,5 @@ public class RKUtil {
         }else{
             return RKApplication.getInstance().getResources().getDrawable(def);
         }
-
     }
 }

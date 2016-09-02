@@ -3,8 +3,6 @@ package cn.xmrk.weather.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +29,10 @@ import cn.xmrk.weather.pojo.ChooseCityInfo;
 import cn.xmrk.weather.pojo.CityInfo;
 import cn.xmrk.weather.util.CityUtil;
 import cn.xmrk.weather.util.MyQuickSideBarView;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Au61 on 2016/6/15.
@@ -57,25 +59,34 @@ public class AddCityActivity extends BaseActivity implements OnQuickSideBarTouch
 
     private void loadCityInfo() {
         getPDM().showProgress("正在加载城市信息");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //这边加载城市信息
-                CityUtil.getInstance();
-                mHandler.sendEmptyMessage(0);
-            }
-        }).start();
-    }
+        Observable
+                .create(new Observable.OnSubscribe<Object>() {
+                    @Override
+                    public void call(Subscriber<? super Object> subscriber) {
+                        CityUtil.getInstance();
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    }
+                })
+                .subscribeOn(Schedulers.io())//启动的线程
+                .observeOn(AndroidSchedulers.mainThread())//回调的线程
+                .subscribe(new Subscriber<Object>() {
+                    @Override
+                    public void onNext(Object obj) {
+                        getPDM().dismiss();
+                        initRecycle();
+                    }
 
-    private Handler mHandler = new Handler() {
-        @Override
-        public void dispatchMessage(Message msg) {
-            if (msg.what == 0) {
-                getPDM().dismiss();
-                initRecycle();
-            }
-        }
-    };
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
 
     private void initToolbar() {
         final View view = getLayoutInflater().inflate(R.layout.title_addcity, null);
@@ -107,7 +118,6 @@ public class AddCityActivity extends BaseActivity implements OnQuickSideBarTouch
                 mAdapter.reflush(CityUtil.getInstance().getChooseCityInfo(input));
                 if (StringUtil.isEmptyString(input)) {
                     quickSideBarView.setVisibility(View.VISIBLE);
-
                     rv_city.addItemDecoration(mDecoration);
                 } else {
                     quickSideBarView.setVisibility(View.GONE);
@@ -125,7 +135,6 @@ public class AddCityActivity extends BaseActivity implements OnQuickSideBarTouch
 
     private void initRecycle() {
         quickSideBarView.setOnQuickSideBarTouchListener(this);
-
         //设置recycle的数据和点击时间监听
         rv_city.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mAdapter = new CityInfoAdapter(CityUtil.getInstance().cityInfos);

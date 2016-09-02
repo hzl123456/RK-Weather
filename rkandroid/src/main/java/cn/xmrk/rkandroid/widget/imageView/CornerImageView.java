@@ -35,7 +35,7 @@ public class CornerImageView extends RoundImageView {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        //默认为5个像素点
+        //默认为10个像素点
         if (attrs == null) {
             mCornerSize = CommonUtil.dip2px(10);
         } else {

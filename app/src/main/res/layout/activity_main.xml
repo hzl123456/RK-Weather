@@ -32,8 +32,6 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/title_bar_height"
             tools:openDrawer="start">
-
-
             <!--存储信息-->
             <android.support.v4.view.ViewPager
                 android:id="@+id/view_pager"
@@ -50,4 +48,5 @@
                 app:menu="@menu/activity_main_drawer" />
         </android.support.v4.widget.DrawerLayout>
     </android.support.design.widget.CoordinatorLayout>
+
 </RelativeLayout>
