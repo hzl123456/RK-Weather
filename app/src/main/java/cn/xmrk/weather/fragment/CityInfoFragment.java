@@ -7,9 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import cn.xmrk.rkandroid.fragment.BaseFragment;
 import cn.xmrk.rkandroid.utils.CommonUtil;
 import cn.xmrk.weather.R;
@@ -18,6 +15,7 @@ import cn.xmrk.weather.adapter.WeatherAdapter;
 import cn.xmrk.weather.appwidget.WeatherWidgetProvider;
 import cn.xmrk.weather.db.ChooseCityInfoDbHelper;
 import cn.xmrk.weather.helper.NotificatinHelper;
+import cn.xmrk.weather.helper.RxBus;
 import cn.xmrk.weather.net.BaseRequest;
 import cn.xmrk.weather.net.WeatherCallback;
 import cn.xmrk.weather.pojo.ChooseCityInfo;
@@ -25,6 +23,8 @@ import cn.xmrk.weather.pojo.WeatherInfo;
 import cn.xmrk.weather.pojo.WeatherPost;
 import cn.xmrk.weather.util.AutoSwipeRefreshLayout;
 import okhttp3.Call;
+import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  * Created by Au61 on 2016/6/15.
@@ -41,26 +41,25 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
     private ChooseCityInfoDbHelper dbHelper;
 
     private AutoSwipeRefreshLayout sfRefresh;
-
     /**
      * 包含各种信息的content
      **/
     private RecyclerView rvContent;
-
     /**
      * 内容的adapter
      **/
     private WeatherAdapter mAdapter;
-
     /**
      * 当前fragment所展现的city信息
      **/
     private ChooseCityInfo info;
-
     /**
      * 给定的一个标志
      **/
     public String fragmentTag;
+
+
+    private Subscription rxSubscription;
 
 
     public static CityInfoFragment newInstance(ChooseCityInfo info, boolean isFirstFragment, String fragmentTag) {
@@ -76,6 +75,7 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
     public void setHasRefresh(boolean hasRefresh) {
         this.hasRefresh = hasRefresh;
     }
+
 
     @Override
     protected int getContentViewId() {
@@ -129,14 +129,14 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
     public void onRefresh() {
         //在这里刷新数据
         loadWheatherInfo();
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        //进行反注册
-        EventBus.getDefault().unregister(this);
+        if (rxSubscription != null && !rxSubscription.isUnsubscribed()) {
+            rxSubscription.unsubscribe();
+        }
     }
 
     private void refreshContent(WeatherInfo response) {
@@ -155,13 +155,12 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
             sfRefresh.setRefreshing(false);
             hasRefresh = true;
         }
-
         //顺便更新下信息,感觉也没啥软用
         try {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
             WeatherWidgetProvider.updateAppWidget(getActivity(), appWidgetManager,
                     new ChooseCityInfoDbHelper().getChooseCityInfoList().get(0).mWeatherInfo);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -178,8 +177,8 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
         BaseRequest.getCityWeather(info.city.city_id, new WeatherCallback() {
             @Override
             public void onResponse(WeatherInfo response, int id) {
-                //通过eventbus将数据分给他的子fragment
-                EventBus.getDefault().post(new WeatherPost(fragmentTag, response));
+                //通过rxbus将数据分给他的子fragment
+                RxBus.getDefault().post(new WeatherPost(fragmentTag, response));
                 //自己刷新自己
                 refreshContent(response);
                 //刷新通知
@@ -205,9 +204,17 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
             loadData();
             isFirstFragment = false;
         }
-        if (!EventBus.getDefault().isRegistered(this)) {
-            //进行注册
-           EventBus.getDefault().register(this);
+        //采用rxbus的方式进行注册
+        if (rxSubscription == null) {
+            //这里采用rxbus的方式实现
+            rxSubscription = RxBus.getDefault().toObservable(String.class)
+                    .subscribe(new Action1<String>() {
+                                   @Override
+                                   public void call(String time) {
+                                       onRefresh();
+                                   }
+                               }
+                    );
         }
         //展现通知
         NotificatinHelper.showNotification(info);
@@ -224,13 +231,6 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
         }
     }
 
-    /**
-     * 收到消息就进行更新
-     **/
-    @Subscribe
-    public void onEventMainThread(String time) {
-        onRefresh();
-    }
 
     @Override
     public boolean onBackPressed() {

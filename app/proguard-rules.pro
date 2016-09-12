@@ -96,6 +96,6 @@
 # 源文件和行号的信息不混淆
 -keepattributes SourceFile,LineNumberTable
 
-# 保证poj0不被混淆
+# 保证pojo不被混淆
 -dontwarn cn.xmrk.weather.pojo.**
 -keep class cn.xmrk.weather.pojo.**{*;}

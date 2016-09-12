@@ -6,16 +6,16 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import cn.xmrk.rkandroid.fragment.BaseFragment;
 import cn.xmrk.rkandroid.utils.StringUtil;
 import cn.xmrk.weather.R;
+import cn.xmrk.weather.helper.RxBus;
 import cn.xmrk.weather.helper.TshowHelper;
 import cn.xmrk.weather.pojo.WeatherInfo;
 import cn.xmrk.weather.pojo.WeatherPost;
 import cn.xmrk.weather.util.WeatherUtil;
+import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  * Created by Au61 on 2016/6/17.
@@ -34,6 +34,8 @@ public class TemperatureFragment extends BaseFragment {
 
     private WeatherInfo info;
     private String fragmentTag;
+
+    private Subscription rxSubscription;
 
     public static TemperatureFragment newInstance(WeatherInfo info, String fragmentTag) {
         TemperatureFragment f = new TemperatureFragment();
@@ -57,28 +59,34 @@ public class TemperatureFragment extends BaseFragment {
             findViews();
             getArgumentsInfo();
             initData();
-            EventBus.getDefault().register(this);
+
+            //这里采用rxbus的方式实现
+            rxSubscription = RxBus.getDefault().toObservable(WeatherPost.class)
+                    .subscribe(new Action1<WeatherPost>() {
+                                   @Override
+                                   public void call(WeatherPost post) {
+                                       if (StringUtil.isEqualsString(post.fragmnetTag, TemperatureFragment.this.fragmentTag)) {
+                                           Log.i("info-->", "接收到了" + fragmentTag + "_" + post.weatherInfo.getCity());
+                                           TemperatureFragment.this.info = post.weatherInfo;
+                                           initData();
+                                       }
+                                   }
+                               }
+                    );
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        if (rxSubscription!=null&&!rxSubscription.isUnsubscribed()) {
+            rxSubscription.unsubscribe();
+        }
     }
 
     public void getArgumentsInfo() {
         fragmentTag = getArguments().getString("fragmentTag");
         info = getArguments().getParcelable("data");
-    }
-
-    @Subscribe
-    public void onEventMainThread(WeatherPost post) {
-        if (StringUtil.isEqualsString(post.fragmnetTag, this.fragmentTag)) {
-            Log.i("info-->", "接收到了" + fragmentTag + "_" + post.weatherInfo.getCity());
-            this.info = post.weatherInfo;
-            initData();
-        }
     }
 
     public void initData() {
@@ -125,7 +133,7 @@ public class TemperatureFragment extends BaseFragment {
 
     @Override
     public boolean onBackPressed() {
-        if(mHelper!=null&&mHelper.isShowing()){
+        if (mHelper != null && mHelper.isShowing()) {
             mHelper.dismiss();
             return false;
         }

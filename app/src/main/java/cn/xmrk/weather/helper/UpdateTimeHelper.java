@@ -4,7 +4,6 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Au61 on 2016/6/21.
@@ -60,7 +59,7 @@ public class UpdateTimeHelper {
 
                 @Override
                 public void onFinish() {
-                    EventBus.getDefault().post(System.currentTimeMillis() + "");
+                    RxBus.getDefault().post(System.currentTimeMillis() + "");
                     mHandler.sendEmptyMessage(0);
                 }
             }.start();

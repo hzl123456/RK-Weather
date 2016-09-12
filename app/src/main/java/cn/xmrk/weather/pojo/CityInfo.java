@@ -23,8 +23,8 @@ public class CityInfo implements Parcelable {
 
     /**
      * 城市英文名称，其实是拼音
-     * **/
-    public String  city_child_en;
+     **/
+    public String city_child_en;
     /**
      * 上一级名称
      **/

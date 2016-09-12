@@ -109,7 +109,6 @@
             android:layout_marginTop="3dp"
             android:text="邮箱：mail@hezhilin.cc"
             android:textColor="@color/color_text_grey" />
-
     </RelativeLayout>
 
 </LinearLayout>

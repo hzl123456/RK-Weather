@@ -34,6 +34,7 @@ public class ChooseCityAdapter extends BaseRecycleAdapter<ChooseCityInfo> implem
         super(mData);
         this.dbHelper = dbHelper;
         this.activity= activity;
+
     }
 
     @Override

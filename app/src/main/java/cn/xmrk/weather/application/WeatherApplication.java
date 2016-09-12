@@ -1,9 +1,7 @@
 package cn.xmrk.weather.application;
 
 import com.zhy.http.okhttp.OkHttpUtils;
-
 import java.util.concurrent.TimeUnit;
-
 import cn.xmrk.rkandroid.application.RKApplication;
 import cn.xmrk.rkandroid.config.IRKConfig;
 import cn.xmrk.weather.helper.UpdateTimeHelper;

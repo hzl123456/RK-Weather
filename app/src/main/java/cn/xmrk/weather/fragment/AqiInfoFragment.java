@@ -5,15 +5,15 @@ import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import cn.xmrk.rkandroid.fragment.BaseFragment;
 import cn.xmrk.rkandroid.utils.StringUtil;
 import cn.xmrk.weather.R;
+import cn.xmrk.weather.helper.RxBus;
 import cn.xmrk.weather.pojo.WeatherInfo;
 import cn.xmrk.weather.pojo.WeatherPost;
 import cn.xmrk.weather.view.AqiView;
+import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  * Created by Administrator on 2016/6/18.
@@ -30,6 +30,8 @@ public class AqiInfoFragment extends BaseFragment {
 
     private WeatherInfo info;
     private String fragmentTag;
+
+    private Subscription rxSubscription;
 
     public static AqiInfoFragment newInstance(WeatherInfo info, String fragmentTag) {
         AqiInfoFragment f = new AqiInfoFragment();
@@ -52,16 +54,20 @@ public class AqiInfoFragment extends BaseFragment {
             findViews();
             getArgumentsInfo();
             initData();
-            EventBus.getDefault().register(this);
-        }
-    }
 
-    @Subscribe
-    public void onEventMainThread(WeatherPost post) {
-        if (StringUtil.isEqualsString(post.fragmnetTag, this.fragmentTag)) {
-            Log.i("info-->", "接收到了" + fragmentTag + "_" + post.weatherInfo.getCity());
-            this.info = post.weatherInfo;
-            initData();
+            //这里采用rxbus的方式实现
+            rxSubscription = RxBus.getDefault().toObservable(WeatherPost.class)
+                    .subscribe(new Action1<WeatherPost>() {
+                                   @Override
+                                   public void call(WeatherPost post) {
+                                       if (StringUtil.isEqualsString(post.fragmnetTag, AqiInfoFragment.this.fragmentTag)) {
+                                           Log.i("info-->", "接收到了" + fragmentTag + "_" + post.weatherInfo.getCity());
+                                           AqiInfoFragment.this.info = post.weatherInfo;
+                                           initData();
+                                       }
+                                   }
+                               }
+                    );
         }
     }
 
@@ -107,7 +113,9 @@ public class AqiInfoFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        if (rxSubscription!=null&&!rxSubscription.isUnsubscribed()) {
+            rxSubscription.unsubscribe();
+        }
     }
 
     private void findViews() {

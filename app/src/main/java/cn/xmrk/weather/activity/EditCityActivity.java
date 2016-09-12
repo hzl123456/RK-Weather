@@ -31,7 +31,6 @@ public class EditCityActivity extends BackableBaseActivity {
     private ChooseCityInfoDbHelper dbHelper;
     private ItemTouchHelper mItemTouchHelper;
 
-
     /**
      * 城市信息列表
      **/
@@ -44,7 +43,6 @@ public class EditCityActivity extends BackableBaseActivity {
         setContentView(R.layout.activity_editcity);
         initView();
         loadDbInfo();
-
     }
 
     /**
@@ -106,8 +104,6 @@ public class EditCityActivity extends BackableBaseActivity {
                         mAdapter.hasEdit = true;
                     }
                 }, null);
-
-
             }
 
             @Override
