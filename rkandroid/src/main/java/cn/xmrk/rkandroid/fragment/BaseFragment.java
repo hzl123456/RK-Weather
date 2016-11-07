@@ -22,6 +22,7 @@ import cn.xmrk.rkandroid.config.StatisticsConfig;
  * 2014年11月4日 下午3:59:50
  */
 public abstract class BaseFragment extends Fragment {
+
     private final Logger log = Logger.getLogger(getClass());
 
     private View contentView;

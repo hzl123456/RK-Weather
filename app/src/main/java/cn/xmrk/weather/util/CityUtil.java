@@ -37,11 +37,13 @@ public class CityUtil {
 
     public static CityUtil getInstance() {
         if (mCityUtil == null) {
-            mCityUtil = new CityUtil();
-            //获取数据库信息
-            mCityUtil.db = mCityUtil.loadDbFile();
-            //然后记载数据信息
-            mCityUtil.loadCityInfos();
+            synchronized (CityUtil.class) {
+                mCityUtil = new CityUtil();
+                //获取数据库信息
+                mCityUtil.db = mCityUtil.loadDbFile();
+                //然后记载数据信息
+                mCityUtil.loadCityInfos();
+            }
         }
         return mCityUtil;
     }

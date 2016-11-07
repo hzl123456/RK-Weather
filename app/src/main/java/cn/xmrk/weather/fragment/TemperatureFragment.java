@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import cn.xmrk.rkandroid.fragment.BaseFragment;
+import cn.xmrk.rkandroid.utils.CommonUtil;
 import cn.xmrk.rkandroid.utils.StringUtil;
 import cn.xmrk.weather.R;
 import cn.xmrk.weather.helper.RxBus;
@@ -71,6 +72,11 @@ public class TemperatureFragment extends BaseFragment {
                                            initData();
                                        }
                                    }
+                               }, new Action1<Throwable>() {
+                                   @Override
+                                   public void call(Throwable throwable) {
+                                       CommonUtil.showToast(throwable.getMessage());
+                                   }
                                }
                     );
         }
@@ -79,7 +85,7 @@ public class TemperatureFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (rxSubscription!=null&&!rxSubscription.isUnsubscribed()) {
+        if (rxSubscription != null && !rxSubscription.isUnsubscribed()) {
             rxSubscription.unsubscribe();
         }
     }

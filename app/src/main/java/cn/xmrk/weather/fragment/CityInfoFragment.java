@@ -213,6 +213,11 @@ public class CityInfoFragment extends BaseFragment implements SwipeRefreshLayout
                                    public void call(String time) {
                                        onRefresh();
                                    }
+                               }, new Action1<Throwable>() {
+                                   @Override
+                                   public void call(Throwable throwable) {
+                                       CommonUtil.showToast(throwable.getMessage());
+                                   }
                                }
                     );
         }

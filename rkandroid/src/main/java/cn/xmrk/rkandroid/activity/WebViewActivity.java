@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.webkit.DownloadListener;
-
+import android.webkit.WebSettings;
 import cn.xmrk.rkandroid.R;
 import cn.xmrk.rkandroid.widget.BaseWebViewClient;
 import cn.xmrk.rkandroid.widget.ProgressWebView;
@@ -42,6 +42,13 @@ public class WebViewActivity extends BackableBaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        ((ViewGroup) wv.getParent()).removeView(wv);
+        wv.destroy();
+        super.onDestroy();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
@@ -54,7 +61,9 @@ public class WebViewActivity extends BackableBaseActivity {
         //设置标题
         getSupportActionBar().setTitle(title);
 
+        wv.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         wv.getSettings().setJavaScriptEnabled(true);
+        wv.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         wv.getSettings().setDomStorageEnabled(true);
         wv.getSettings().setSupportZoom(true);
         wv.getSettings().setUseWideViewPort(true);
@@ -71,15 +80,6 @@ public class WebViewActivity extends BackableBaseActivity {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             }
         });
-
         wv.setWebViewClient(new BaseWebViewClient());
     }
-
-    @Override
-    protected void onDestroy() {
-        ((ViewGroup) wv.getParent()).removeView(wv);
-        wv.destroy();
-        super.onDestroy();
-    }
-
 }

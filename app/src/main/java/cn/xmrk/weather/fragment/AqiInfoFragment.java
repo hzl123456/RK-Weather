@@ -6,6 +6,7 @@ import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import cn.xmrk.rkandroid.fragment.BaseFragment;
+import cn.xmrk.rkandroid.utils.CommonUtil;
 import cn.xmrk.rkandroid.utils.StringUtil;
 import cn.xmrk.weather.R;
 import cn.xmrk.weather.helper.RxBus;
@@ -67,6 +68,12 @@ public class AqiInfoFragment extends BaseFragment {
                                        }
                                    }
                                }
+                            , new Action1<Throwable>() {
+                                @Override
+                                public void call(Throwable throwable) {
+                                    CommonUtil.showToast(throwable.getMessage());
+                                }
+                            }
                     );
         }
     }

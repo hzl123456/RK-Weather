@@ -51,6 +51,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setSupportActionBar(titlebar);
         setStatusColor();
     }
+
     /**
      * 5.0以上设置状态栏的颜色，其实在6.0以上才有效果
      **/

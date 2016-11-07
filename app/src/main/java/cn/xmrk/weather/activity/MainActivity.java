@@ -406,6 +406,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            //全球台风：https://earth.nullschool.net/
             case R.id.nav_typhone://全球台风
                 WebViewActivity.start(this, "全球台风", "https://earth.nullschool.net/", false);
                 break;

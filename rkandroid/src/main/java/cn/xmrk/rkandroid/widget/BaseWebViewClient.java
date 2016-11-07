@@ -21,4 +21,6 @@ public class BaseWebViewClient extends WebViewClient {
         view.loadUrl("javascript:window.local_obj.showSource('<head>'+" + "document.getElementsByTagName('html')[0].innerHTML+'</head>');");
         super.onPageFinished(view, url);
     }
+
+
 }

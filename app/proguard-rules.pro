@@ -55,15 +55,6 @@
 -keep class sun.misc.Unsafe { *; }
 -keep class com.google.gson.examples.android.model. { *; }
 
-# eventbus的混淆
--keepclassmembers class ** {
-    public void onEvent*(**);
-    public void onEventMainThread*(**);
-}
--keepclassmembers class * extends de.greenrobot.event.util.ThrowableFailureEvent {
-    <init>(java.lang.Throwable);
-}
-
 # support的v4和v7包
 -keep class android.support.v4.** { *; }
 -keep interface android.support.v4.** { *; }

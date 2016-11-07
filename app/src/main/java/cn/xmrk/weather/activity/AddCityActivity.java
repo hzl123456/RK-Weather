@@ -88,6 +88,10 @@ public class AddCityActivity extends BaseActivity implements OnQuickSideBarTouch
                 });
     }
 
+    private void getSize( int i){
+
+    }
+
     private void initToolbar() {
         final View view = getLayoutInflater().inflate(R.layout.title_addcity, null);
         etSearch = (ClearEditText) view.findViewById(R.id.et_search);

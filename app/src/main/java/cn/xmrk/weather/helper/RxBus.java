@@ -14,6 +14,7 @@ import rx.subjects.Subject;
  * Created by YoKeyword on 2015/6/17.
  */
 public class RxBus {
+
     private static volatile RxBus defaultInstance;
 
     private final Subject<Object, Object> bus;
@@ -38,6 +39,7 @@ public class RxBus {
     public void post (Object o) {
         bus.onNext(o);
     }
+
 
     // 根据传递的 eventType 类型返回特定类型(eventType)的 被观察者
     public <T> Observable<T> toObservable(Class<T> eventType) {

@@ -27,5 +27,4 @@
         android:layout_alignParentRight="true"
         app:sidebarTextColor="@android:color/black"
         app:sidebarTextColorChoose="@color/colorPrimary" />
-
 </RelativeLayout>

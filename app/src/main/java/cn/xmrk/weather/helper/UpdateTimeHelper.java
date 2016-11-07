@@ -30,7 +30,9 @@ public class UpdateTimeHelper {
 
     public static UpdateTimeHelper getInstance() {
         if (mHelper == null) {
-            mHelper = new UpdateTimeHelper();
+            synchronized (UpdateTimeHelper.class) {
+                mHelper = new UpdateTimeHelper();
+            }
         }
         return mHelper;
     }

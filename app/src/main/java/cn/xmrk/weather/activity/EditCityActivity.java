@@ -50,8 +50,7 @@ public class EditCityActivity extends BackableBaseActivity {
      **/
     private void loadDbInfo() {
         getPDM().showProgress("正在加载城市信息");
-        Observable
-                .create(new Observable.OnSubscribe<Object>() {
+        Observable.create(new Observable.OnSubscribe<Object>() {
                     @Override
                     public void call(Subscriber<? super Object> subscriber) {
                         chooseCityInfos = dbHelper.getChooseCityInfoList();

@@ -10,7 +10,6 @@ import android.view.MotionEvent;
  * Created by Au61 on 2016/6/17.
  */
 public class ChildViewPager extends ViewPager {
-
     /**
      * 触摸时按下的点
      **/
@@ -72,7 +71,6 @@ public class ChildViewPager extends ViewPager {
             }
         }
         if (arg0.getAction() == MotionEvent.ACTION_UP) {
-            // if(downP.x==curP.x && downP.y==curP.y){
             if (Math.abs(downP.x - curP.x) < 5 && Math.abs(downP.y - curP.y) < 5) {//做了小小的修改
                 return true;
             }
