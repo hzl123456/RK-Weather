@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //添加城市和管理城市的回调
     private final int ADD_CITY_CODE = 88;
+
     private final int EDIT_CITY_CODE = 89;
 
     private Toolbar toolbar;
@@ -165,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getWeatherCity();
         initViewPager();
         startLocation();
+
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -258,6 +260,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (mLocationHelper != null) {
             mLocationHelper.stopLocation();
         }
+
+
+
     }
 
     /**
@@ -367,39 +372,74 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void sharePicture() {
-        // 获取windows中最顶层的view
-        View view = getWindow().getDecorView();
-        // 允许当前窗口保存缓存信息
-        view.setDrawingCacheEnabled(true);
-        // 获取状态栏高度
-        Rect rect = new Rect();
-        view.getWindowVisibleDisplayFrame(rect);
-        int statusBarHeights = rect.top;
-        Display display = getWindowManager().getDefaultDisplay();
-        // 获取屏幕宽和高
-        int widths = display.getWidth();
-        int heights = display.getHeight();
-        // 去掉状态栏
-        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), 0,
-                statusBarHeights, widths, heights - statusBarHeights);
-        // 销毁缓存信息
-        view.destroyDrawingCache();
-        view.setDrawingCacheEnabled(false);
-        //生成父路径
-        File parentFile = new File(CommonUtil.getDir() + File.separator + "weather");
-        if (!parentFile.exists()) {
-            parentFile.mkdirs();
+        if (pdm == null) {
+            pdm = new DialogUtil(this);
         }
-        //保存图片
-        File file = new File(parentFile.getAbsolutePath() + File.separator + System.currentTimeMillis() + ".png");
-        FileUtil.saveBmpToFilePng(bmp, file);
-        //分享图片
-        Uri uri = Uri.parse("file://" + file.getAbsolutePath());
-        Intent it = new Intent(Intent.ACTION_SEND);
-        it.putExtra(Intent.EXTRA_STREAM, uri);
-        it.setType("image/*");
-        startActivityForResult(Intent.createChooser(it,
-                "分享现在的天气"), 10);
+        pdm.showProgress("正在生成天气信息");
+        Observable
+                .create(new Observable.OnSubscribe<File>() {
+
+                    @Override
+                    public void call(Subscriber<? super File> subscriber) {
+                        // 获取windows中最顶层的view
+                        View view = getWindow().getDecorView();
+                        // 允许当前窗口保存缓存信息
+                        view.setDrawingCacheEnabled(true);
+                        // 获取状态栏高度
+                        Rect rect = new Rect();
+                        view.getWindowVisibleDisplayFrame(rect);
+                        int statusBarHeights = rect.top;
+                        Display display = getWindowManager().getDefaultDisplay();
+                        // 获取屏幕宽和高
+                        int widths = display.getWidth();
+                        int heights = display.getHeight();
+                        // 去掉状态栏
+                        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), 0,
+                                statusBarHeights, widths, heights - statusBarHeights);
+                        // 销毁缓存信息
+                        view.destroyDrawingCache();
+                        view.setDrawingCacheEnabled(false);
+                        //生成父路径
+                        File parentFile = new File(CommonUtil.getDir() + File.separator + "weather");
+                        if (!parentFile.exists()) {
+                            parentFile.mkdirs();
+                        }
+                        //保存图片
+                        File file = new File(parentFile.getAbsolutePath() + File.separator + System.currentTimeMillis() + ".png");
+                        FileUtil.saveBmpToFilePng(bmp, file);
+
+                        subscriber.onNext(file);
+                        subscriber.onCompleted();
+                    }
+
+                })
+                .subscribeOn(Schedulers.io())//启动的线程
+                .observeOn(AndroidSchedulers.mainThread())//回调的线程
+                .subscribe(new Subscriber<File>() {
+                    @Override
+                    public void onNext(File file) {
+                        if (pdm != null) {
+                            pdm.dismiss();
+                        }
+                        //分享图片
+                        Uri uri = Uri.parse("file://" + file.getAbsolutePath());
+                        Intent it = new Intent(Intent.ACTION_SEND);
+                        it.putExtra(Intent.EXTRA_STREAM, uri);
+                        it.setType("image/*");
+                        startActivityForResult(Intent.createChooser(it,
+                                "分享现在的天气"), 10);
+
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
     }
 
     @Override
@@ -453,6 +493,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(MainActivity.class);
             }
         }
+
     }
 
     @Override

@@ -4,11 +4,15 @@ import android.app.Application;
 
 import com.squareup.leakcanary.RefWatcher;
 
+import org.apache.log4j.Logger;
+
 import cn.xmrk.rkandroid.config.IRKConfig;
 import cn.xmrk.rkandroid.config.RKConfigHelper;
 import cn.xmrk.rkandroid.config.StatisticsConfig;
 
 public abstract class RKApplication extends Application {
+
+
 
 	private static RKApplication mApplication;
 
